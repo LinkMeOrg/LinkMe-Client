@@ -276,7 +276,7 @@
 /* ============================================= */
 @layer components {
   .card-glass {
-    @apply bg-white/80 dark:bg-brand-dark/60 backdrop-blur-xl shadow-card rounded-2xl border border-white/10;
+    @apply bg-white/80 dark:bg-brand-white/60 backdrop-blur-xl shadow-card rounded-2xl border border-white/10;
   }
 }
 

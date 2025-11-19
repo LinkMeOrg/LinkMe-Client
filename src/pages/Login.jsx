@@ -224,7 +224,7 @@ const Login = () => {
           </div>
 
           {/* Social Auth Buttons */}
-          <SocialAuthButtons />
+          {/* <SocialAuthButtons /> */}
 
           {/* Sign Up Link */}
           <div className="text-center text-sm text-gray-600 mt-6">

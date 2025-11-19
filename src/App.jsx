@@ -22,6 +22,8 @@ import OAuthSuccessWrapper from "./components/OAuthSuccessWrapper";
 import OTPVerify from "./pages/OTPVerify";
 import ScrollToTopButton from "./layout/ScrollToTopButton";
 import Terms from "./pages/Terms";
+import CreateCard from "./pages/CreateCard";
+import PublicProfile from "./pages/PublicProfile";
 
 const AppContent = () => {
   const location = useLocation();
@@ -54,7 +56,11 @@ const AppContent = () => {
         <Route path="/about" element={<About />} />
         <Route path="/oauth-success" element={<OAuthSuccessWrapper />} />
         <Route path="/verify-otp" element={<OTPVerify />} />
+
+        {/* new Route */}
         <Route path="/terms" element={<Terms />} />
+        <Route path="/create-card" element={<CreateCard />} />
+        <Route path="/u/:slug" element={<PublicProfile />} />
       </Routes>
       {!shouldHideNavbarFooter && <Footer />}
       <ScrollToTopButton />
