@@ -1,23 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Mail,
-  Phone,
-  MapPin,
-  Send,
-  MessageSquare,
-  Clock,
-  Globe,
-  Sparkles,
-  CheckCircle,
-  ArrowRight,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  HeadphonesIcon,
-  Zap,
-  ShieldCheck,
-} from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Globe, ShieldCheck } from "lucide-react";
+import Swal from "sweetalert2";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -67,10 +50,20 @@ const ContactUs = () => {
 
       setFormData({ name: "", email: "", message: "" });
 
-      alert("Your message has been sent successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Message Sent!",
+        text: "Your message has been sent successfully!",
+        confirmButtonColor: "#060640",
+      });
     } catch (error) {
       console.error("Error sending message:", error);
-      alert("There was an error sending your message. Please try again later.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "There was an error sending your message. Please try again later.",
+        confirmButtonColor: "#060640",
+      });
     }
   };
 

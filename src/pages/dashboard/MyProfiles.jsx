@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
+import Swal from "sweetalert2";
 
 export default function MyProfiles() {
   const [profiles, setProfiles] = useState([]);
@@ -82,15 +83,61 @@ export default function MyProfiles() {
         console.log("Share cancelled");
       }
     } else {
-      navigator.clipboard.writeText(shareUrl);
-      alert("Link copied to clipboard!");
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Copied!",
+            text: "Link copied to clipboard!",
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: "top-end",
+          });
+        })
+        .catch((err) => {
+          console.error("Failed to copy: ", err);
+          Swal.fire({
+            icon: "error",
+            title: "Oops!",
+            text: "Failed to copy link.",
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: "top-end",
+          });
+        });
     }
   };
 
   const handleCopyLink = (slug) => {
     const url = `${window.location.origin}/u/${slug}`;
-    navigator.clipboard.writeText(url);
-    alert("Link copied to clipboard!");
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Copied!",
+          text: "Link copied to clipboard!",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Failed to copy link.",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      });
   };
 
   const filteredProfiles = profiles.filter((profile) => {

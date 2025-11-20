@@ -8,6 +8,8 @@ import ProfileTypeSwitch from "../components/CreateCard/ProfileTypeSwitch";
 import ProfileForm from "../components/CreateCard/ProfileForm";
 import LiveCardPreview from "../components/CreateCard/LiveCardPreview";
 
+import Swal from "sweetalert2";
+
 const INITIAL_PERSONAL_DATA = {
   name: "",
   title: "",
@@ -152,7 +154,12 @@ export default function CreateCard() {
 
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please login to create a profile");
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "Please login to create a profile",
+        confirmButtonColor: "#060640",
+      });
       navigate("/login");
       return;
     }
@@ -161,7 +168,12 @@ export default function CreateCard() {
       profileType === "personal" ? personalData : businessData;
 
     if (!currentData.name?.trim()) {
-      alert("Name is required");
+      Swal.fire({
+        icon: "error",
+        title: "Validation Error",
+        text: "Name is required",
+        confirmButtonColor: "#060640",
+      });
       return;
     }
 
@@ -187,21 +199,37 @@ export default function CreateCard() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        alert(errorData.message || "Error creating profile. Please try again.");
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text:
+            errorData.message || "Error creating profile. Please try again.",
+          confirmButtonColor: "#060640",
+        });
         return;
       }
 
       const data = await res.json();
-      alert(
-        `${
+      Swal.fire({
+        icon: "success",
+        title: "Profile Created!",
+        html: `${
           profileType === "personal" ? "Personal" : "Business"
-        } profile created successfully! 🎉\nYour link: ${data.data.profileUrl}`
-      );
-      // navigate(`/u/${data.data.slug}`);
-      navigate(`/dashboard`);
+        } profile created successfully! 🎉<br>Your link: <a href="/u/${
+          data.data.slug
+        }" class="text-blue-600 underline">View Profile</a>`,
+        confirmButtonColor: "#060640",
+      }).then(() => {
+        navigate("/dashboard");
+      });
     } catch (err) {
       console.error(err);
-      alert("Something went wrong. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong",
+        text: "Please try again.",
+        confirmButtonColor: "#060640",
+      });
     } finally {
       setLoading(false);
     }

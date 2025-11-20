@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
-
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   useLocation,
 } from "react-router-dom";
+
 import { AuthProvider } from "./context/AuthContext";
+
+// Layout
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
+
+// Pages
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
@@ -20,11 +23,13 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import OAuthSuccessWrapper from "./components/OAuthSuccessWrapper";
 import OTPVerify from "./pages/OTPVerify";
-import ScrollToTopButton from "./layout/ScrollToTopButton";
 import Terms from "./pages/Terms";
 import CreateCard from "./pages/CreateCard";
 import PublicProfile from "./pages/PublicProfile";
 import HowItWorks from "./pages/HowItWorks";
+import VerifyAccount from "./pages/VerifyAccount";
+
+// Dashboard
 import DashboardLayout from "./layout/DashboardLayout";
 import DashboardOverview from "./pages/dashboard/DashboardOverview";
 import MyProfiles from "./pages/dashboard/MyProfiles";
@@ -32,8 +37,16 @@ import EditProfile from "./pages/dashboard/EditProfile";
 import Analytics from "./pages/dashboard/Analytics";
 import Settings from "./pages/dashboard/Settings";
 
+// Helpers
+import ScrollToTopButton from "./layout/ScrollToTopButton";
+
+// Route Guards
+import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
+
 const AppContent = () => {
   const location = useLocation();
+
   const hideNavbarFooterPaths = [
     "/login",
     "/signup",
@@ -47,30 +60,63 @@ const AppContent = () => {
     location.pathname.startsWith(path)
   );
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  const isUser = user?.role === "user";
-
   return (
     <>
       {!shouldHideNavbarFooter && <Navbar />}
+
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        {/* ---------- GUEST ONLY ---------- */}
+        <Route
+          path="/login"
+          element={
+            <GuestRoute>
+              <Login />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <GuestRoute>
+              <SignUp />
+            </GuestRoute>
+          }
+        />
+
+        {/* ---------- PUBLIC ROUTES ---------- */}
         <Route path="/" element={<Home />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/oauth-success" element={<OAuthSuccessWrapper />} />
         <Route path="/verify-otp" element={<OTPVerify />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/create-card" element={<CreateCard />} />
+        <Route path="/verify-account" element={<VerifyAccount />} />
         <Route path="/u/:slug" element={<PublicProfile />} />
-        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/create-card" element={<CreateCard />} />
 
-        <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+        {/* ---------- PROTECTED USER ROUTES ---------- */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ---------- PROTECTED DASHBOARD ---------- */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<DashboardOverview />} />
           <Route path="profiles" element={<MyProfiles />} />
           <Route path="profiles/:id" element={<EditProfile />} />
@@ -78,6 +124,7 @@ const AppContent = () => {
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
+
       {!shouldHideNavbarFooter && <Footer />}
       <ScrollToTopButton />
     </>

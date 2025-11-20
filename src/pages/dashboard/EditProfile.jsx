@@ -22,6 +22,7 @@ import {
   Edit3,
   Image as ImageIcon,
 } from "lucide-react";
+import Swal from "sweetalert2";
 
 export default function EditProfile() {
   const { id } = useParams();
@@ -97,12 +98,28 @@ export default function EditProfile() {
 
       const data = await response.json();
       if (data.success) {
-        alert("Profile updated successfully!");
-        fetchProfile();
+        Swal.fire({
+          icon: "success",
+          title: "Profile Updated",
+          text: "Profile updated successfully!",
+          confirmButtonColor: "#060640",
+        }).then(() => fetchProfile());
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Update Failed",
+          text: data.message || "Error updating profile",
+          confirmButtonColor: "#060640",
+        });
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Error updating profile");
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "Error updating profile",
+        confirmButtonColor: "#060640",
+      });
     } finally {
       setSaving(false);
     }
@@ -187,8 +204,31 @@ export default function EditProfile() {
   };
 
   const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    alert("Link copied to clipboard!");
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Copied!",
+          text: "Link copied to clipboard!",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Failed to copy link.",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      });
   };
 
   if (loading) {
