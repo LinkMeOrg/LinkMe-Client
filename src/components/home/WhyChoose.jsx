@@ -30,8 +30,13 @@ const WhyChoose = () => {
         {/* -------- LEFT SIDE CONTENT -------- */}
         <div data-aos="fade-right" className="space-y-6">
           <h2 className="text-3xl md:text-4xl font-semibold">
-            Why Choose <span className="text-brand-primary">Dot LinkMe?</span>
-          </h2>
+  Why Choose{" "}
+  <span className="text-brand-primary font-bold">
+    <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span> LinkMe?
+  </span>
+</h2>
+
+
 
           <p className="text-gray-600 dark:text-gray-300 max-w-md">
             A modern, smart, and secure way to share your digital identity.
