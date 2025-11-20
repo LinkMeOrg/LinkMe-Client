@@ -14,7 +14,8 @@ const FinalCTA = () => {
           -translate-x-1/2 -translate-y-1/2
           text-[70px] md:text-[130px] lg:text-[170px]
           font-extrabold tracking-wider
-         text-brand-primary/10  select-none pointer-events-none
+          text-[#f2a91d]/20
+          select-none pointer-events-none
           whitespace-nowrap
         "
       >
