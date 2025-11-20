@@ -32,10 +32,37 @@ const ContactUs = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
+
+    try {
+      const response = await fetch(
+        "http://localhost:4000/api/create/contact-messages",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      const data = await response.json();
+      console.log("Message sent successfully:", data);
+
+      // Optional: reset the form
+      setFormData({ name: "", email: "", message: "" });
+
+      // Optional: show a success alert
+      alert("Your message has been sent successfully!");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert("There was an error sending your message. Please try again later.");
+    }
   };
 
   return (
