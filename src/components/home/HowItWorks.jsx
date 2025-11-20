@@ -23,9 +23,10 @@ const HowItWorks = () => {
   return (
     <section className="relative py-24 overflow-hidden bg-gradient-to-b from-white to-[#f4f6ff] dark:from-brand-dark dark:to-[#0b0c24]">
       {/* Faded background title */}
-      <h1 className="absolute top-10 left-1/2 -translate-x-1/2 text-[90px] font-extrabold text-brand-primary/10 tracking-widest select-none">
-        HOW IT WORKS
-      </h1>
+      <h1 className="absolute top-10 left-1/2 -translate-x-1/2 text-[90px] font-extrabold text-[#f2a91d]/20 tracking-widest select-none">
+      HOW IT WORKS
+      </h1> 
+
 
       <div className="section-shell grid md:grid-cols-2 items-center gap-16 relative z-10">
         {/* ---------- Left: Phone Mockup ---------- */}
@@ -45,8 +46,13 @@ const HowItWorks = () => {
         {/* ---------- Right: Steps ---------- */}
         <div data-aos="fade-left" className="space-y-8">
           <h2 className="text-3xl md:text-4xl font-semibold">
-            How <span className="text-brand-primary">Dot LinkMe</span> Works
-          </h2>
+  How{" "}
+  <span className="text-brand-primary font-bold">
+    <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span> LinkMe
+  </span>{" "}
+  Works
+</h2>
+
           <p className="text-gray-600 dark:text-gray-300 max-w-md">
             Turn your physical card into a powerful digital identity in seconds.
           </p>

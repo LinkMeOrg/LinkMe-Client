@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const SOCIAL_PLATFORMS = [
   { key: "website", label: "Website", placeholder: "https://yoursite.com" },
@@ -267,7 +267,7 @@ function SocialLinksSection({ socialLinks, onSocialLinksChange }) {
             </label>
             <input
               type="text"
-              value={socialLinks[platform.key]}
+              value={socialLinks[platform.key] || ""}
               onChange={(e) =>
                 onSocialLinksChange(platform.key, e.target.value)
               }
@@ -294,6 +294,46 @@ export default function ProfileForm({
   onSwitchProfile,
   loading,
 }) {
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await fetch("http://localhost:4000/api/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+
+        // Combine first, second, last names into full name
+        const fullName = [data.firstName, data.secondName, data.lastName]
+          .filter(Boolean)
+          .join(" ");
+
+        updateProfile({
+          name: fullName || "",
+          firstName: data.firstName || "",
+          secondName: data.secondName || "",
+          lastName: data.lastName || "",
+        });
+
+        // Fill email and phone in social links
+        if (data.email) {
+          onSocialLinksChange("email", data.email);
+        }
+        if (data.phoneNumber) {
+          onSocialLinksChange("phone", data.phoneNumber);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, [updateProfile, onSocialLinksChange]);
+
   return (
     <form
       onSubmit={onSubmit}
