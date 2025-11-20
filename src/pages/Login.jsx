@@ -5,7 +5,6 @@ import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import SocialAuthButtons from "../components/SocialAuthButtons";
 import Swal from "sweetalert2";
 
 const Login = () => {
@@ -47,11 +46,9 @@ const Login = () => {
       if (response.data.token && response.data.user) {
         login(response.data.token, response.data.user);
 
-        // Show SweetAlert success message
         await Swal.fire({
           icon: "success",
           title: "Login Successful",
-          text: `Welcome back, ${response.data.user.firstName}!`,
           confirmButtonText: "Continue",
         });
 
@@ -68,9 +65,23 @@ const Login = () => {
         setError(response.data.message || "Login failed");
       }
     } catch (error) {
-      setError(
-        error.response?.data?.message || "An error occurred. Please try again."
-      );
+      const msg =
+        error.response?.data?.message || "An error occurred. Please try again.";
+      setError(msg);
+
+      if (msg === "Please verify your email first") {
+        Swal.fire({
+          icon: "warning",
+          title: "Verify Your Email",
+          text: "Redirecting you to email verification...",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+
+        setTimeout(() => {
+          navigate("/verify-account");
+        }, 3000);
+      }
     } finally {
       setLoading(false);
     }
@@ -81,7 +92,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-brand-light">
-      {/* WRAPPER */}
       <section className="section-shell pt-28 pb-20 flex justify-center items-start">
         <div
           data-aos="fade-up"
@@ -99,7 +109,6 @@ const Login = () => {
             </p>
           </div>
 
-          {/* Error Alert */}
           {error && (
             <div
               className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg"
@@ -109,9 +118,7 @@ const Login = () => {
             </div>
           )}
 
-          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Email Address
@@ -128,7 +135,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Password */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Password
@@ -158,7 +164,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Remember Me & Forgot Password */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <input
@@ -180,7 +185,6 @@ const Login = () => {
               </Link>
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -216,17 +220,12 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Divider */}
           <div className="flex items-center justify-center my-6">
             <div className="h-px w-1/3 bg-gray-200"></div>
             <p className="mx-3 text-xs text-gray-500">or</p>
             <div className="h-px w-1/3 bg-gray-200"></div>
           </div>
 
-          {/* Social Auth Buttons */}
-          {/* <SocialAuthButtons /> */}
-
-          {/* Sign Up Link */}
           <div className="text-center text-sm text-gray-600 mt-6">
             <p>
               Don't have an account?{" "}

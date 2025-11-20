@@ -191,24 +191,24 @@
     @apply text-2xl font-bold mb-3;
   }
   .feature-text {
-    @apply text-gray-600 dark:text-gray-300 text-base leading-relaxed;
+    @apply text-gray-600  text-base leading-relaxed;
   }
 
   .how-card {
-    @apply bg-white dark:bg-brand-dark rounded-3xl shadow-md p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl;
+    @apply bg-white  rounded-3xl shadow-md p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl;
   }
   .how-title {
     @apply text-2xl font-bold text-brand-primary mb-3;
   }
   .how-text {
-    @apply text-gray-600 dark:text-gray-300 text-base leading-relaxed;
+    @apply text-gray-600  text-base leading-relaxed;
   }
 
   .testimonial-card {
-    @apply bg-white/80 dark:bg-brand-dark/60 rounded-3xl shadow-md p-8 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl;
+    @apply bg-white/80  rounded-3xl shadow-md p-8 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl;
   }
   .testimonial-text {
-    @apply text-gray-700 dark:text-gray-300 text-base leading-relaxed italic mb-6;
+    @apply text-gray-700  text-base leading-relaxed italic mb-6;
   }
 
   .dot {
@@ -227,7 +227,7 @@
 /* ============================================= */
 @layer components {
   .nav-link {
-    @apply text-brand-dark dark:text-white hover:text-brand-primary transition-colors cursor-pointer relative pb-1;
+    @apply text-brand-dark  hover:text-brand-primary transition-colors cursor-pointer relative pb-1;
   }
   .nav-link::after {
     content: "";
@@ -276,7 +276,7 @@
 /* ============================================= */
 @layer components {
   .card-glass {
-    @apply bg-white/80 dark:bg-brand-white/60 backdrop-blur-xl shadow-card rounded-2xl border border-white/10;
+    @apply bg-white/80  backdrop-blur-xl shadow-card rounded-2xl border border-white/10;
   }
 }
 

@@ -49,7 +49,6 @@ function getTemplateClassName(selectedTemplate, hasAiBackground) {
     gradient:
       "bg-gradient-to-br from-brand-primary/90 via-[#0B0F19] to-[#16203A]",
     glass: "bg-white/80",
-    dark: "bg-brand-dark",
     modern: "bg-brand-primary",
   };
 

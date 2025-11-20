@@ -3,35 +3,30 @@ import { Zap, UserCircle, BarChart2 } from "lucide-react";
 
 const WhatIs = () => {
   return (
-    <section
-      data-aos="fade-up"
-      className="py-20 bg-white dark:bg-brand-dark text-brand-dark dark:text-white"
-    >
+    <section data-aos="fade-up" className="py-20 bg-white  text-brand-dark ">
       <div className="section-shell grid md:grid-cols-2 gap-14 items-center">
         {/* ---------- RIGHT SIDE (TEXT AREA) ---------- */}
         <div className="space-y-6 order-2 md:order-1">
           <h2 className="text-3xl md:text-4xl font-semibold leading-snug">
-  What is{" "}
-  <span className="text-brand-primary font-bold">
-    <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span> LinkMe?
-  </span>
-</h2>
+            What is{" "}
+            <span className="text-brand-primary font-bold">
+              <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span>{" "}
+              LinkMe?
+            </span>
+          </h2>
 
-
-          <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+          <p className="text-gray-600  text-lg leading-relaxed">
             Dot LinkMe is a next-generation NFC-powered identity solution that
             transforms how you share your digital presence. With a single tap,
             your profile, links, and branding become instantly accessible,
             making networking seamless, intelligent, and beautifully simple.
           </p>
 
-          <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+          <p className="text-gray-600  text-lg leading-relaxed">
             Our platform adapts to your lifestyle—giving you full control over
             updates, analytics, and your professional identity through a smart,
             dynamic interface.
           </p>
-
-          
         </div>
 
         {/* ---------- LEFT SIDE (ICON CARDS) ---------- */}
@@ -43,7 +38,7 @@ const WhatIs = () => {
             <Zap size={42} className="text-brand-primary" />
             <div>
               <h3 className="text-xl font-semibold">One Tap Identity</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 ">
                 Share all your contact info instantly using NFC or QR.
               </p>
             </div>
@@ -57,7 +52,7 @@ const WhatIs = () => {
             <UserCircle size={42} className="text-brand-primary" />
             <div>
               <h3 className="text-xl font-semibold">Personal Profile Page</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 ">
                 A personalized digital profile with your bio, links, and
                 branding.
               </p>
@@ -72,7 +67,7 @@ const WhatIs = () => {
             <BarChart2 size={42} className="text-brand-primary" />
             <div>
               <h3 className="text-xl font-semibold">Smart Analytics</h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 ">
                 Track visits, clicks, and views in real-time from your
                 dashboard.
               </p>

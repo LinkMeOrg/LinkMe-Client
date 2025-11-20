@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
+import Swal from "sweetalert2";
 
 export default function MyProfiles() {
   const [profiles, setProfiles] = useState([]);
@@ -51,9 +52,18 @@ export default function MyProfiles() {
   };
 
   const handleDeleteProfile = async (profileId) => {
-    if (!window.confirm("Are you sure you want to delete this profile?")) {
-      return;
-    }
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to delete this profile?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       const token = localStorage.getItem("token");
@@ -63,8 +73,21 @@ export default function MyProfiles() {
       });
 
       setProfiles(profiles.filter((p) => p.id !== profileId));
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "The profile has been deleted.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error deleting profile:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Failed to delete the profile.",
+        icon: "error",
+      });
     }
   };
 
@@ -82,15 +105,61 @@ export default function MyProfiles() {
         console.log("Share cancelled");
       }
     } else {
-      navigator.clipboard.writeText(shareUrl);
-      alert("Link copied to clipboard!");
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Copied!",
+            text: "Link copied to clipboard!",
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: "top-end",
+          });
+        })
+        .catch((err) => {
+          console.error("Failed to copy: ", err);
+          Swal.fire({
+            icon: "error",
+            title: "Oops!",
+            text: "Failed to copy link.",
+            timer: 2000,
+            showConfirmButton: false,
+            toast: true,
+            position: "top-end",
+          });
+        });
     }
   };
 
   const handleCopyLink = (slug) => {
     const url = `${window.location.origin}/u/${slug}`;
-    navigator.clipboard.writeText(url);
-    alert("Link copied to clipboard!");
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Copied!",
+          text: "Link copied to clipboard!",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Failed to copy link.",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      });
   };
 
   const filteredProfiles = profiles.filter((profile) => {

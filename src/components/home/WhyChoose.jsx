@@ -25,20 +25,19 @@ const WhyChoose = () => {
     },
   ];
   return (
-    <section className="py-24 bg-white dark:bg-brand-dark text-brand-dark dark:text-white">
+    <section className="py-24 bg-white  text-brand-dark ">
       <div className="section-shell grid md:grid-cols-2 gap-16 items-center">
         {/* -------- LEFT SIDE CONTENT -------- */}
         <div data-aos="fade-right" className="space-y-6">
           <h2 className="text-3xl md:text-4xl font-semibold">
-  Why Choose{" "}
-  <span className="text-brand-primary font-bold">
-    <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span> LinkMe?
-  </span>
-</h2>
+            Why Choose{" "}
+            <span className="text-brand-primary font-bold">
+              <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span>{" "}
+              LinkMe?
+            </span>
+          </h2>
 
-
-
-          <p className="text-gray-600 dark:text-gray-300 max-w-md">
+          <p className="text-gray-600  max-w-md">
             A modern, smart, and secure way to share your digital identity.
             Designed to elevate your presence and put you ahead of the game.
           </p>
@@ -48,15 +47,13 @@ const WhyChoose = () => {
             {features.map((f, i) => (
               <div
                 key={i}
-                className="p-5 rounded-2xl bg-white dark:bg-[#1a1c39] border border-gray-200 dark:border-white/10 shadow-md 
+                className="p-5 rounded-2xl bg-white  border border-gray-200  shadow-md 
                 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-float"
                 style={{ animationDelay: `${i * 0.15}s` }}
               >
                 <div className="mb-3">{f.icon}</div>
                 <h3 className="font-semibold text-lg mb-1">{f.title}</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  {f.text}
-                </p>
+                <p className="text-sm text-gray-600 ">{f.text}</p>
               </div>
             ))}
           </div>

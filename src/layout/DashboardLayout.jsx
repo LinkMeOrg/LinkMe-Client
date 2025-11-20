@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userInfo, setUserInfo] = useState({ name: "", email: "" });
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { logout } = useAuth();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -37,8 +40,12 @@ export default function DashboardLayout() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    setTimeout(() => {
+      logout();
+    }, 1000);
+    setTimeout(() => {
+      navigate("/", { replace: true });
+    }, 500);
   };
 
   const isActive = (path) => {

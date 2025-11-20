@@ -22,6 +22,8 @@ import {
   Edit3,
   Image as ImageIcon,
 } from "lucide-react";
+import Swal from "sweetalert2";
+import AddSocialLinkModal from "../../components/AddSocialLinkModal";
 
 export default function EditProfile() {
   const { id } = useParams();
@@ -30,8 +32,8 @@ export default function EditProfile() {
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState(null);
   const [socialLinks, setSocialLinks] = useState([]);
-  const [showQR, setShowQR] = useState(false);
   const [activeTab, setActiveTab] = useState("basic");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -97,12 +99,28 @@ export default function EditProfile() {
 
       const data = await response.json();
       if (data.success) {
-        alert("Profile updated successfully!");
-        fetchProfile();
+        Swal.fire({
+          icon: "success",
+          title: "Profile Updated",
+          text: "Profile updated successfully!",
+          confirmButtonColor: "#060640",
+        }).then(() => fetchProfile());
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Update Failed",
+          text: data.message || "Error updating profile",
+          confirmButtonColor: "#060640",
+        });
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      alert("Error updating profile");
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "Error updating profile",
+        confirmButtonColor: "#060640",
+      });
     } finally {
       setSaving(false);
     }
@@ -141,7 +159,18 @@ export default function EditProfile() {
   };
 
   const handleDeleteSocialLink = async (linkId) => {
-    if (!window.confirm("Delete this social link?")) return;
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Delete this social link?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
 
     try {
       const token = localStorage.getItem("token");
@@ -151,8 +180,21 @@ export default function EditProfile() {
       });
 
       setSocialLinks(socialLinks.filter((link) => link.id !== linkId));
+
+      Swal.fire({
+        title: "Deleted!",
+        text: "The social link has been deleted.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error deleting social link:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Failed to delete social link.",
+        icon: "error",
+      });
     }
   };
 
@@ -187,8 +229,31 @@ export default function EditProfile() {
   };
 
   const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-    alert("Link copied to clipboard!");
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Copied!",
+          text: "Link copied to clipboard!",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Failed to copy link.",
+          timer: 2000,
+          showConfirmButton: false,
+          toast: true,
+          position: "top-end",
+        });
+      });
   };
 
   if (loading) {
@@ -521,15 +586,7 @@ export default function EditProfile() {
                   </div>
                 </div>
                 <button
-                  onClick={() => {
-                    const platform = prompt(
-                      "Platform (e.g., linkedin, github, twitter):"
-                    );
-                    const url = prompt("URL:");
-                    if (platform && url) {
-                      handleAddSocialLink(platform, url);
-                    }
-                  }}
+                  onClick={() => setIsModalOpen(true)}
                   className="btn-primary-clean px-6 py-3 flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
@@ -549,15 +606,13 @@ export default function EditProfile() {
                     Add your social media profiles to connect with your audience
                   </p>
                   <button
-                    onClick={() => {
-                      const platform = prompt("Platform:");
-                      const url = prompt("URL:");
-                      if (platform && url) handleAddSocialLink(platform, url);
-                    }}
+                    onClick={() => setIsModalOpen(true)}
                     className="btn-primary-clean px-6 py-3 inline-flex items-center gap-2"
                   >
                     <Plus className="w-4 h-4" />
-                    Add Your First Link
+                    {socialLinks.length === 0
+                      ? "Add Your First Link"
+                      : "Add Link"}
                   </button>
                 </div>
               ) : (
@@ -862,6 +917,13 @@ export default function EditProfile() {
           </div>
         </div>
       </div>
+
+      <AddSocialLinkModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleAddSocialLink}
+        existingPlatforms={socialLinks.map((link) => link.platform)}
+      />
     </div>
   );
 }

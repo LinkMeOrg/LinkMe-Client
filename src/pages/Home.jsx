@@ -6,7 +6,7 @@ import FinalCTA from "../components/home/FinalCTA";
 
 const Home = () => {
   return (
-    <div className="dark:bg-brand-dark bg-white">
+    <div className=" bg-white">
       <Hero />
       <WhatIs />
       <HowItWorks />
