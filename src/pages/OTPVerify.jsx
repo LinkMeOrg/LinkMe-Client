@@ -19,6 +19,7 @@ const OTPVerify = () => {
   const inputRefs = useRef([]);
 
   const email = state?.email;
+  const returnTo = state?.returnTo; // ✅ NEW: Get returnTo from state
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -115,7 +116,14 @@ const OTPVerify = () => {
           title: "OTP Verified!",
           text: "Your OTP has been verified successfully.",
           confirmButtonText: "OK",
-        }).then(() => navigate("/"));
+        }).then(() => {
+          // ✅ NEW: Check if there's a returnTo path
+          if (returnTo) {
+            navigate(returnTo);
+          } else {
+            navigate("/");
+          }
+        });
       } else {
         setError(response.data.message || "OTP verification failed");
       }

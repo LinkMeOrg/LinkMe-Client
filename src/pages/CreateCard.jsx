@@ -121,12 +121,60 @@ export default function CreateCard() {
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
+
+    // ✅ NEW: Restore saved data from localStorage
+    const savedFormData = localStorage.getItem("createCardFormData");
+    if (savedFormData) {
+      try {
+        const parsedData = JSON.parse(savedFormData);
+
+        // Restore profile type
+        if (parsedData.profileType) {
+          setProfileType(parsedData.profileType);
+        }
+
+        // Restore template
+        if (parsedData.selectedTemplate) {
+          setSelectedTemplate(parsedData.selectedTemplate);
+        }
+
+        // Restore personal data
+        if (parsedData.personalData) {
+          setPersonalData(parsedData.personalData);
+        }
+
+        // Restore business data
+        if (parsedData.businessData) {
+          setBusinessData(parsedData.businessData);
+        }
+
+        // Restore social links
+        if (parsedData.socialLinks) {
+          setSocialLinks(parsedData.socialLinks);
+        }
+
+        // Clear the saved data after restoration
+        localStorage.removeItem("createCardFormData");
+
+        // Show success message
+        Swal.fire({
+          icon: "success",
+          title: "Welcome Back!",
+          text: "Your form data has been restored. Continue where you left off!",
+          confirmButtonColor: "#060640",
+          timer: 3000,
+        });
+      } catch (error) {
+        console.error("Error restoring form data:", error);
+        localStorage.removeItem("createCardFormData");
+      }
+    }
   }, []);
 
   const updatePersonalData = (updates) => {
     setPersonalData((prev) => ({ ...prev, ...updates }));
   };
-  
+
   const updateBusinessData = (updates) => {
     setBusinessData((prev) => ({ ...prev, ...updates }));
   };
@@ -149,18 +197,40 @@ export default function CreateCard() {
     };
   };
 
-  const handleCreateProfile = async (e) => {
-    // e.preventDefault();
+  // ✅ NEW: Save form data to localStorage
+  const saveFormDataToLocalStorage = () => {
+    const formDataToSave = {
+      profileType,
+      selectedTemplate,
+      personalData,
+      businessData,
+      socialLinks,
+    };
+    localStorage.setItem("createCardFormData", JSON.stringify(formDataToSave));
+  };
 
+  const handleCreateProfile = async (e) => {
     const token = localStorage.getItem("token");
+
+    // ✅ NEW: If not logged in, save data and redirect to login
     if (!token) {
+      saveFormDataToLocalStorage();
+
       Swal.fire({
-        icon: "warning",
+        icon: "info",
         title: "Login Required",
-        text: "Please login to create a profile",
+        text: "Please login to create your profile. Your data will be saved!",
         confirmButtonColor: "#060640",
+        confirmButtonText: "Go to Login",
+        showCancelButton: true,
+        cancelButtonText: "Sign Up Instead",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login", { state: { returnTo: "/create-card" } });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          navigate("/signup", { state: { returnTo: "/create-card" } });
+        }
       });
-      navigate("/login");
       return;
     }
 

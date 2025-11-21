@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const VerifyAccount = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ NEW: Get location state
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const returnTo = location.state?.returnTo; // ✅ NEW: Get returnTo from state
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -28,7 +31,13 @@ const VerifyAccount = () => {
         confirmButtonText: "Continue",
       });
 
-      navigate("/verify-otp", { state: { email } });
+      // ✅ NEW: Pass returnTo to OTP verification page
+      navigate("/verify-otp", {
+        state: {
+          email,
+          returnTo, // Pass the returnTo path
+        },
+      });
     } catch (error) {
       Swal.fire({
         icon: "error",

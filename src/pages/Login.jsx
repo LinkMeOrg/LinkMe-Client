@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Swal from "sweetalert2";
@@ -18,6 +18,7 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ NEW: Get location state
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -52,14 +53,21 @@ const Login = () => {
           confirmButtonText: "Continue",
         });
 
-        const userRole = response.data.user.role;
+        // Check if there's a returnTo path from location state
+        const returnTo = location.state?.returnTo;
 
-        if (userRole === "user") {
-          navigate("/");
-        } else if (userRole === "business") {
-          navigate("/business");
+        if (returnTo) {
+          navigate(returnTo);
         } else {
-          navigate("/");
+          const userRole = response.data.user.role;
+
+          if (userRole === "user") {
+            navigate("/");
+          } else if (userRole === "business") {
+            navigate("/business");
+          } else {
+            navigate("/");
+          }
         }
       } else {
         setError(response.data.message || "Login failed");
@@ -79,7 +87,10 @@ const Login = () => {
         });
 
         setTimeout(() => {
-          navigate("/verify-account");
+          // ✅ NEW: Pass returnTo when redirecting to verify-account
+          navigate("/verify-account", {
+            state: { returnTo: location.state?.returnTo },
+          });
         }, 3000);
       }
     } finally {
@@ -231,6 +242,7 @@ const Login = () => {
               Don't have an account?{" "}
               <Link
                 to="/signup"
+                state={{ returnTo: location.state?.returnTo }} // ✅ NEW: Pass returnTo to signup
                 className="text-brand-primary font-medium hover:underline"
               >
                 Sign Up

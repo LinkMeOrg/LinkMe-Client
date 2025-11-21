@@ -3,7 +3,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 import SocialAuthButtons from "../components/SocialAuthButtons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const SignUp = () => {
@@ -68,6 +68,7 @@ const SignUp = () => {
   const [agree, setAgree] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation(); // ✅ NEW: Get location state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -153,12 +154,25 @@ const SignUp = () => {
             text: response.data.message,
             confirmButtonText: "OK",
           });
-          navigate("/verify-otp", { state: { email: formData.email } });
+          navigate("/verify-otp", {
+            state: {
+              email: formData.email,
+              returnTo: location.state?.returnTo, // ✅ NEW: Pass returnTo through OTP
+            },
+          });
         }
         // Direct login
         else if (response.data.token) {
-          login(response.data.token);
-          navigate("/");
+          login(response.data.token, response.data.user);
+
+          // ✅ NEW: Check if there's a returnTo path
+          const returnTo = location.state?.returnTo;
+
+          if (returnTo) {
+            navigate(returnTo);
+          } else {
+            navigate("/");
+          }
         }
       }
     } catch (error) {
@@ -484,6 +498,7 @@ const SignUp = () => {
               Already have an account?{" "}
               <Link
                 to="/login"
+                state={{ returnTo: location.state?.returnTo }} // ✅ NEW: Pass returnTo to login
                 className="text-brand-primary font-medium hover:underline"
               >
                 Log In
