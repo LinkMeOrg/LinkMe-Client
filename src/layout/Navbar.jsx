@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { User, LogOut, LogIn } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { token, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user?.role === "business";
@@ -23,6 +23,17 @@ const Navbar = () => {
     navigate("/");
   };
 
+  // Helper for NavLink class
+  const navLinkClass = ({ isActive }) =>
+    isActive
+      ? "nav-link-pro active text-brand-accent font-bold"
+      : "nav-link-pro";
+
+  const drawerLinkClass = ({ isActive }) =>
+    isActive
+      ? "drawer-link-pro active text-brand-accent font-bold"
+      : "drawer-link-pro";
+
   return (
     <nav
       className={`
@@ -33,41 +44,41 @@ const Navbar = () => {
       `}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-        {/* LOGO - Exact same style as DotLinkMe */}
-        <Link
+        {/* LOGO */}
+        <NavLink
           to="/"
           className="text-[22px] font-extrabold tracking-tight flex items-center gap-1"
         >
           <span className="text-brand-accent">Dot</span>
           <span className="text-brand-primary">LinkMe</span>
-        </Link>
+        </NavLink>
 
         {/* DESKTOP NAV */}
         <ul className="hidden lg:flex items-center gap-10 text-[16px] font-medium text-gray-700">
           <li>
-            <Link className="nav-link-pro" to="/">
+            <NavLink to="/" className={navLinkClass}>
               Home
-            </Link>
-          </li>{" "}
+            </NavLink>
+          </li>
           <li>
-            <Link className="nav-link-pro" to="/create-card">
+            <NavLink to="/create-card" className={navLinkClass}>
               Create Card
-            </Link>
-          </li>{" "}
+            </NavLink>
+          </li>
           <li>
-            <Link className="nav-link-pro" to="/how-it-works">
+            <NavLink to="/how-it-works" className={navLinkClass}>
               How It Works
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link className="nav-link-pro" to="/about">
+            <NavLink to="/about" className={navLinkClass}>
               About
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link className="nav-link-pro" to="/contact">
+            <NavLink to="/contact" className={navLinkClass}>
               Contact
-            </Link>
+            </NavLink>
           </li>
         </ul>
 
@@ -75,17 +86,17 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center gap-4">
           {token ? (
             <>
-              <Link to="/dashboard" className="btn-ghost-clean">
+              <NavLink to="/dashboard" className="btn-ghost-clean">
                 Profile
-              </Link>
+              </NavLink>
               <button onClick={handleLogout} className="btn-primary-clean">
                 Logout
               </button>
             </>
           ) : (
-            <Link to="/login" className="btn-primary-clean">
+            <NavLink to="/login" className="btn-primary-clean">
               Sign In
-            </Link>
+            </NavLink>
           )}
         </div>
 
@@ -101,19 +112,17 @@ const Navbar = () => {
       {/* MOBILE DRAWER */}
       {isMenuOpen && (
         <>
-          {/* overlay */}
           <div
             className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[999]"
             onClick={() => setIsMenuOpen(false)}
           ></div>
 
-          {/* drawer */}
           <div
             className="
-            fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-[1000]
-            flex flex-col gap-6 px-7 pt-20 pb-10
-            transition-transform duration-300 translate-x-0
-          "
+              fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-[1000]
+              flex flex-col gap-6 px-7 pt-20 pb-10
+              transition-transform duration-300 translate-x-0
+            "
           >
             <button
               onClick={() => setIsMenuOpen(false)}
@@ -121,51 +130,53 @@ const Navbar = () => {
             >
               ✕
             </button>
-            <Link
-              className="drawer-link-pro"
+
+            <NavLink
               to="/"
+              className={drawerLinkClass}
               onClick={() => setIsMenuOpen(false)}
             >
               Home
-            </Link>{" "}
-            <Link
-              className="drawer-link-pro"
+            </NavLink>
+            <NavLink
               to="/create-card"
+              className={drawerLinkClass}
               onClick={() => setIsMenuOpen(false)}
             >
               Create Card
-            </Link>{" "}
-            <Link
-              className="drawer-link-pro"
+            </NavLink>
+            <NavLink
               to="/how-it-works"
+              className={drawerLinkClass}
               onClick={() => setIsMenuOpen(false)}
             >
-              How It Works{" "}
-            </Link>{" "}
-            <Link
-              className="drawer-link-pro"
+              How It Works
+            </NavLink>
+            <NavLink
               to="/about"
+              className={drawerLinkClass}
               onClick={() => setIsMenuOpen(false)}
             >
               About
-            </Link>
-            <Link
-              className="drawer-link-pro"
+            </NavLink>
+            <NavLink
               to="/contact"
+              className={drawerLinkClass}
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
-            </Link>
+            </NavLink>
+
             <div className="pt-6 flex flex-col gap-3">
               {token ? (
                 <>
-                  <Link
-                    className="btn-ghost-clean text-center"
+                  <NavLink
                     to="/dashboard"
+                    className="btn-ghost-clean text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Profile
-                  </Link>
+                  </NavLink>
                   <button
                     onClick={() => {
                       handleLogout();
@@ -177,13 +188,13 @@ const Navbar = () => {
                   </button>
                 </>
               ) : (
-                <Link
-                  className="btn-primary-clean text-center"
+                <NavLink
                   to="/login"
+                  className="btn-primary-clean text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Sign In
-                </Link>
+                </NavLink>
               )}
             </div>
           </div>

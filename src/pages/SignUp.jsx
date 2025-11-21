@@ -7,6 +7,49 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const SignUp = () => {
+  const countryCodes = [
+    { name: "Jordan", code: "+962", shortcut: "JO" },
+    { name: "Saudi Arabia", code: "+966", shortcut: "SA" },
+    { name: "UAE", code: "+971", shortcut: "AE" },
+    { name: "Qatar", code: "+974", shortcut: "QA" },
+    { name: "Kuwait", code: "+965", shortcut: "KW" },
+    { name: "USA", code: "+1", shortcut: "US" },
+    { name: "UK", code: "+44", shortcut: "GB" },
+    { name: "Canada", code: "+1", shortcut: "CA" },
+    { name: "Australia", code: "+61", shortcut: "AU" },
+    { name: "Germany", code: "+49", shortcut: "DE" },
+    { name: "France", code: "+33", shortcut: "FR" },
+    { name: "Italy", code: "+39", shortcut: "IT" },
+    { name: "Spain", code: "+34", shortcut: "ES" },
+    { name: "Netherlands", code: "+31", shortcut: "NL" },
+    { name: "Sweden", code: "+46", shortcut: "SE" },
+    { name: "Norway", code: "+47", shortcut: "NO" },
+    { name: "Denmark", code: "+45", shortcut: "DK" },
+    { name: "Finland", code: "+358", shortcut: "FI" },
+    { name: "Brazil", code: "+55", shortcut: "BR" },
+    { name: "Mexico", code: "+52", shortcut: "MX" },
+    { name: "Argentina", code: "+54", shortcut: "AR" },
+    { name: "South Africa", code: "+27", shortcut: "ZA" },
+    { name: "India", code: "+91", shortcut: "IN" },
+    { name: "China", code: "+86", shortcut: "CN" },
+    { name: "Japan", code: "+81", shortcut: "JP" },
+    { name: "South Korea", code: "+82", shortcut: "KR" },
+    { name: "Singapore", code: "+65", shortcut: "SG" },
+    { name: "New Zealand", code: "+64", shortcut: "NZ" },
+    { name: "Russia", code: "+7", shortcut: "RU" },
+    { name: "Turkey", code: "+90", shortcut: "TR" },
+    { name: "Egypt", code: "+20", shortcut: "EG" },
+    { name: "Morocco", code: "+212", shortcut: "MA" },
+    { name: "Nigeria", code: "+234", shortcut: "NG" },
+    { name: "Kenya", code: "+254", shortcut: "KE" },
+    { name: "Pakistan", code: "+92", shortcut: "PK" },
+    { name: "Bangladesh", code: "+880", shortcut: "BD" },
+    { name: "Thailand", code: "+66", shortcut: "TH" },
+    { name: "Vietnam", code: "+84", shortcut: "VN" },
+    { name: "Philippines", code: "+63", shortcut: "PH" },
+    { name: "Malaysia", code: "+60", shortcut: "MY" },
+  ];
+
   const [formData, setFormData] = useState({
     firstname: "",
     secondname: "",
@@ -128,6 +171,15 @@ const SignUp = () => {
     }
   };
 
+  const handleCountryCodeChange = (e) => {
+    const selectedCode = e.target.value;
+
+    setFormData((prev) => ({
+      ...prev,
+      phone: selectedCode, // inject phone code automatically
+    }));
+  };
+
   const inputClasses =
     "w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40";
 
@@ -219,15 +271,48 @@ const SignUp = () => {
               <label className="text-sm font-medium text-gray-700">
                 Phone Number
               </label>
-              <input
-                type="tel"
-                name="phone"
-                placeholder="+962 7X XXX XXXX"
-                required
-                value={formData.phone}
-                onChange={handleChange}
-                className={`${inputClasses} w-full`}
-              />
+
+              <div className="flex gap-2">
+                {/* Country Code Selector */}
+                <select
+                  className="
+    w-40 
+    border border-gray-300 
+    rounded-2xl 
+    px-4 py-2 
+    text-sm 
+    bg-white 
+    shadow-sm 
+    hover:border-gray-400 
+    focus:outline-none 
+    focus:ring-2 
+    focus:ring-brand-primary/50 
+    focus:border-brand-primary
+    transition
+    duration-200
+    ease-in-out
+  "
+                  onChange={handleCountryCodeChange}
+                >
+                  <option value="">Select Country</option>
+                  {countryCodes.map((country) => (
+                    <option key={country.code} value={country.code}>
+                      {country.shortcut} {country.code} - {country.name}
+                    </option>
+                  ))}
+                </select>
+
+                {/* Phone Input */}
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="+962 7X XXX XXXX"
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className={`${inputClasses} w-full`}
+                />
+              </div>
             </div>
 
             {/* Date of Birth */}

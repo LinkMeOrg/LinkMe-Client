@@ -11,6 +11,49 @@ const SOCIAL_PLATFORMS = [
   { key: "phone", label: "Phone", placeholder: "+962 7X XXX XXXX" },
 ];
 
+const countryCodes = [
+  { name: "Jordan", code: "+962", shortcut: "JO" },
+  { name: "Saudi Arabia", code: "+966", shortcut: "SA" },
+  { name: "UAE", code: "+971", shortcut: "AE" },
+  { name: "Qatar", code: "+974", shortcut: "QA" },
+  { name: "Kuwait", code: "+965", shortcut: "KW" },
+  { name: "USA", code: "+1", shortcut: "US" },
+  { name: "UK", code: "+44", shortcut: "GB" },
+  { name: "Canada", code: "+1", shortcut: "CA" },
+  { name: "Australia", code: "+61", shortcut: "AU" },
+  { name: "Germany", code: "+49", shortcut: "DE" },
+  { name: "France", code: "+33", shortcut: "FR" },
+  { name: "Italy", code: "+39", shortcut: "IT" },
+  { name: "Spain", code: "+34", shortcut: "ES" },
+  { name: "Netherlands", code: "+31", shortcut: "NL" },
+  { name: "Sweden", code: "+46", shortcut: "SE" },
+  { name: "Norway", code: "+47", shortcut: "NO" },
+  { name: "Denmark", code: "+45", shortcut: "DK" },
+  { name: "Finland", code: "+358", shortcut: "FI" },
+  { name: "Brazil", code: "+55", shortcut: "BR" },
+  { name: "Mexico", code: "+52", shortcut: "MX" },
+  { name: "Argentina", code: "+54", shortcut: "AR" },
+  { name: "South Africa", code: "+27", shortcut: "ZA" },
+  { name: "India", code: "+91", shortcut: "IN" },
+  { name: "China", code: "+86", shortcut: "CN" },
+  { name: "Japan", code: "+81", shortcut: "JP" },
+  { name: "South Korea", code: "+82", shortcut: "KR" },
+  { name: "Singapore", code: "+65", shortcut: "SG" },
+  { name: "New Zealand", code: "+64", shortcut: "NZ" },
+  { name: "Russia", code: "+7", shortcut: "RU" },
+  { name: "Turkey", code: "+90", shortcut: "TR" },
+  { name: "Egypt", code: "+20", shortcut: "EG" },
+  { name: "Morocco", code: "+212", shortcut: "MA" },
+  { name: "Nigeria", code: "+234", shortcut: "NG" },
+  { name: "Kenya", code: "+254", shortcut: "KE" },
+  { name: "Pakistan", code: "+92", shortcut: "PK" },
+  { name: "Bangladesh", code: "+880", shortcut: "BD" },
+  { name: "Thailand", code: "+66", shortcut: "TH" },
+  { name: "Vietnam", code: "+84", shortcut: "VN" },
+  { name: "Philippines", code: "+63", shortcut: "PH" },
+  { name: "Malaysia", code: "+60", shortcut: "MY" },
+];
+
 const DEMO_AI_IMAGES = [
   "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=800&q=80",
@@ -248,6 +291,10 @@ function DesignModeSection({ currentProfile, updateProfile }) {
 }
 
 function SocialLinksSection({ socialLinks, onSocialLinksChange }) {
+  const [errors, setErrors] = React.useState({});
+
+  const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/;
+
   return (
     <div className="pt-4 border-t border-gray-200 space-y-3">
       <div className="flex items-center justify-between">
@@ -260,22 +307,88 @@ function SocialLinksSection({ socialLinks, onSocialLinksChange }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {SOCIAL_PLATFORMS.map((platform) => (
-          <div key={platform.key} className="space-y-1">
-            <label className="text-[11px] font-medium text-gray-600 capitalize">
-              {platform.label}
-            </label>
-            <input
-              type="text"
-              value={socialLinks[platform.key] || ""}
-              onChange={(e) =>
-                onSocialLinksChange(platform.key, e.target.value)
-              }
-              placeholder={platform.placeholder}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-brand-primary/40"
-            />
-          </div>
-        ))}
+        {SOCIAL_PLATFORMS.map((platform) => {
+          const shouldValidateUrl =
+            platform.key !== "email" && platform.key !== "phone";
+
+          if (platform.key === "phone") {
+            // Phone input with country code select
+            return (
+              <div key={platform.key} className="space-y-1">
+                <label className="text-[11px] font-medium text-gray-600 capitalize">
+                  {platform.label}
+                </label>
+                <div className="flex gap-2">
+                  <select
+                    value={socialLinks[`${platform.key}_code`] || "+962"}
+                    onChange={(e) =>
+                      onSocialLinksChange(
+                        `${platform.key}_code`,
+                        e.target.value
+                      )
+                    }
+                    className="border border-gray-200 rounded-lg px-3 py-2 text-xs"
+                  >
+                    {countryCodes.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.shortcut} {c.code}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={socialLinks[platform.key] || ""}
+                    onChange={(e) =>
+                      onSocialLinksChange(platform.key, e.target.value)
+                    }
+                    placeholder={platform.placeholder}
+                    className="w-full rounded-lg px-3 py-2 text-xs border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-primary/40"
+                  />
+                </div>
+              </div>
+            );
+          }
+
+          // All other social links (with URL validation except email)
+          return (
+            <div key={platform.key} className="space-y-1">
+              <label className="text-[11px] font-medium text-gray-600 capitalize">
+                {platform.label}
+              </label>
+              <input
+                type="text"
+                value={socialLinks[platform.key] || ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  let isValid = true;
+
+                  if (shouldValidateUrl && value.trim().length > 0) {
+                    isValid = urlRegex.test(value.trim());
+                  }
+
+                  onSocialLinksChange(platform.key, value);
+
+                  setErrors((prev) => ({
+                    ...prev,
+                    [platform.key]: !isValid,
+                  }));
+                }}
+                placeholder={platform.placeholder}
+                className={`w-full rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2
+                  ${
+                    errors[platform.key]
+                      ? "border-red-500 focus:ring-red-400"
+                      : "border-gray-200 focus:ring-brand-primary/40"
+                  }`}
+              />
+              {errors[platform.key] && (
+                <p className="text-[11px] text-red-500">
+                  Please enter a valid URL (http or https)
+                </p>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -307,23 +420,25 @@ export default function ProfileForm({
         });
         const data = await response.json();
 
-        // Combine first, second, last names into full name
-        const fullName = [data.firstName, data.secondName, data.lastName]
-          .filter(Boolean)
-          .join(" ");
+        // Only set if currentProfile.name is empty to avoid overwriting user edits
+        if (!currentProfile.name) {
+          const fullName = [data.firstName, data.secondName, data.lastName]
+            .filter(Boolean)
+            .join(" ");
 
-        updateProfile({
-          name: fullName || "",
-          firstName: data.firstName || "",
-          secondName: data.secondName || "",
-          lastName: data.lastName || "",
-        });
+          updateProfile({
+            name: fullName || "",
+            firstName: data.firstName || "",
+            secondName: data.secondName || "",
+            lastName: data.lastName || "",
+          });
+        }
 
-        // Fill email and phone in social links
-        if (data.email) {
+        // Only set email and phone if they're empty
+        if (data.email && !socialLinks.email) {
           onSocialLinksChange("email", data.email);
         }
-        if (data.phoneNumber) {
+        if (data.phoneNumber && !socialLinks.phone) {
           onSocialLinksChange("phone", data.phoneNumber);
         }
       } catch (error) {
@@ -332,11 +447,36 @@ export default function ProfileForm({
     };
 
     fetchProfile();
-  }, [updateProfile, onSocialLinksChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
+
+  // ✅ New submit handler to transform socialLinks
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const payloadSocialLinks = Object.entries(socialLinks)
+      .filter(([key, value]) => value && key !== "phone_code") // ignore phone_code key
+      .map(([key, value]) => {
+        if (key === "phone") {
+          const code = socialLinks["phone_code"] || "+962";
+          return {
+            platform: "phone",
+            url: `${code} ${value}`,
+          };
+        }
+        return {
+          platform: key,
+          url: value,
+        };
+      });
+
+    // Call original onSubmit with transformed socialLinks
+    onSubmit({ ...currentProfile, socialLinks: payloadSocialLinks });
+  };
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       className="card-glass p-6 md:p-8 space-y-6 lg:flex-[1.35] min-w-0"
       data-aos="fade-right"
     >

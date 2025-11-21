@@ -13,22 +13,18 @@ import {
 export default function Footer() {
   return (
     <footer className="bg-[#0c0f1d] text-[#c9c9d9] py-16 px-6 md:px-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-14">
-        
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-14">
         {/* Brand */}
         <div className="space-y-4">
           <h3 className="text-3xl font-extrabold text-white">
-           <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span>
+            <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span>
             LinkMe
           </h3>
-
           <p className="text-sm text-[#9ea0b5] leading-relaxed">
             Smart NFC-powered identity. Share your profile with a single tap.
           </p>
-
           {/* Social Icons */}
           <div className="flex gap-4 pt-4">
-            {/* Facebook */}
             <a
               className="hover:text-brand-primary transition"
               href="https://www.facebook.com/khaled.abu.yousef.260261"
@@ -37,8 +33,6 @@ export default function Footer() {
             >
               <Globe size={18} />
             </a>
-
-            {/* Instagram */}
             <a
               className="hover:text-brand-primary transition"
               href="https://www.instagram.com/khaledalawartany?igsh=MTBmeXlqOTV2bGx5OA%3D%3D&utm_source=qr"
@@ -47,8 +41,6 @@ export default function Footer() {
             >
               <Instagram size={18} />
             </a>
-
-            {/* Twitter */}
             <a
               className="hover:text-brand-primary transition"
               href="https://x.com/khaled_awartany"
@@ -57,8 +49,6 @@ export default function Footer() {
             >
               <Twitter size={18} />
             </a>
-
-            {/* LinkedIn */}
             <a
               className="hover:text-brand-primary transition"
               href="https://www.linkedin.com/in/khaled-awartany-9660b9280"
@@ -71,7 +61,7 @@ export default function Footer() {
         </div>
 
         {/* Navigation */}
-        <div>
+        <div className="md:pt-0 pt-10">
           <h4 className="text-white font-semibold mb-3">Navigation</h4>
           <ul className="space-y-2 text-sm text-[#a1a3b8]">
             <li>
@@ -79,7 +69,6 @@ export default function Footer() {
                 Home
               </Link>
             </li>
-
             <li>
               <Link
                 to="/create-card"
@@ -88,7 +77,6 @@ export default function Footer() {
                 Create Card
               </Link>
             </li>
-
             <li>
               <Link
                 to="/how-it-works"
@@ -97,16 +85,11 @@ export default function Footer() {
                 How It Works
               </Link>
             </li>
-
             <li>
-              <Link
-                to="/about"
-                className="hover:text-brand-primary transition"
-              >
+              <Link to="/about" className="hover:text-brand-primary transition">
                 About
               </Link>
             </li>
-
             <li>
               <Link
                 to="/contact"
@@ -119,64 +102,22 @@ export default function Footer() {
         </div>
 
         {/* Contact */}
-        <div>
+        <div className="md:pt-0 pt-10">
           <h4 className="text-white font-semibold mb-3">Contact</h4>
           <ul className="space-y-2 text-sm text-[#a1a3b8]">
             <li>
               <Phone size={16} className="inline mr-2 text-brand-primary" />
               +962789924535
             </li>
-
             <li>
               <Mail size={16} className="inline mr-2 text-brand-primary" />
               info@dotmediajo.net
             </li>
-
             <li>
               <MapPin size={16} className="inline mr-2 text-brand-primary" />
               Jordan-Amman Wasfi Al Tal Street
             </li>
           </ul>
-        </div>
-
-        {/* Mini Gallery */}
-        <div>
-          <h4 className="text-white font-semibold mb-3">Gallery</h4>
-
-          <div className="grid grid-cols-3 gap-2">
-
-  <img
-    src="https://i.imgur.com/02Ms2yF.jpeg"
-    className="w-20 h-20 rounded-lg object-cover"
-  />
-
-  <img
-    src="https://i.imgur.com/mbpGm1m.jpeg"
-    className="w-20 h-20 rounded-lg object-cover"
-  />
-
-  <img
-    src="https://i.imgur.com/b3eQ49P.jpeg"
-    className="w-20 h-20 rounded-lg object-cover"
-  />
-
-  <img
-    src="https://i.imgur.com/7mRrYbG.jpeg"
-    className="w-20 h-20 rounded-lg object-cover"
-  />
-
-  <img
-    src="https://i.imgur.com/w0ArpWH.jpeg"
-    className="w-20 h-20 rounded-lg object-cover"
-  />
-
-  <img
-    src="https://i.imgur.com/I7gnC4j.jpeg"
-    className="w-20 h-20 rounded-lg object-cover"
-  />
-
-</div>
-
         </div>
       </div>
 

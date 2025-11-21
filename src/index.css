@@ -296,14 +296,24 @@
   .nav-link-pro {
     @apply relative text-brand-accent hover:text-brand-primary transition font-medium;
   }
+
+  /* Base ::after underline */
   .nav-link-pro::after {
     content: "";
-    @apply absolute left-0 -bottom-1 w-full h-[2px] bg-brand-primary scale-x-0 transition-transform duration-300 origin-left rounded-full;
+    @apply absolute left-0 -bottom-1 w-full h-[2px] bg-brand-primary scale-x-0 origin-left transition-transform duration-300 rounded-full;
   }
+
+  /* Hover effect */
   .nav-link-pro:hover::after {
     @apply scale-x-100;
   }
 
+  /* Active link effect */
+  .nav-link-pro.active::after {
+    @apply scale-x-100;
+  }
+
+  /* Drawer links (mobile) */
   .drawer-link-pro {
     @apply py-2 text-[18px] font-medium text-gray-800 hover:text-brand-primary transition;
   }

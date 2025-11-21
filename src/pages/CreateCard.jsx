@@ -126,7 +126,7 @@ export default function CreateCard() {
   const updatePersonalData = (updates) => {
     setPersonalData((prev) => ({ ...prev, ...updates }));
   };
-
+  
   const updateBusinessData = (updates) => {
     setBusinessData((prev) => ({ ...prev, ...updates }));
   };
@@ -150,7 +150,7 @@ export default function CreateCard() {
   };
 
   const handleCreateProfile = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     const token = localStorage.getItem("token");
     if (!token) {

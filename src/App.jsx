@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -45,6 +45,17 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import Gellary from "./pages/Gellary";
 
+/* ---------- SCROLL TO TOP COMPONENT ---------- */
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
+  return null;
+};
+
 const AppContent = () => {
   const location = useLocation();
 
@@ -63,8 +74,8 @@ const AppContent = () => {
 
   return (
     <>
+      <ScrollToTop /> {/* <-- Added ScrollToTop */}
       {!shouldHideNavbarFooter && <Navbar />}
-
       <Routes>
         {/* ---------- GUEST ONLY ---------- */}
         <Route
@@ -126,7 +137,6 @@ const AppContent = () => {
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
-
       {!shouldHideNavbarFooter && <Footer />}
       <ScrollToTopButton />
     </>

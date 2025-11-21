@@ -46,7 +46,6 @@ const ContactUs = () => {
       if (!response.ok) throw new Error("Failed to send message");
 
       const data = await response.json();
-      console.log("Message sent successfully:", data);
 
       setFormData({ name: "", email: "", message: "" });
 

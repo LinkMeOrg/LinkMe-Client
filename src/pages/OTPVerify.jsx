@@ -25,19 +25,14 @@ const OTPVerify = () => {
   }, []);
 
   useEffect(() => {
-    // Focus on first input when component mounts
-    if (inputRefs.current[0]) {
-      inputRefs.current[0].focus();
-    }
+    if (inputRefs.current[0]) inputRefs.current[0].focus();
 
     if (!email) {
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "Email not found. Please sign up again.",
-      }).then(() => {
-        navigate("/signup");
-      });
+      }).then(() => navigate("/signup"));
     }
   }, [email, navigate]);
 
@@ -54,28 +49,18 @@ const OTPVerify = () => {
 
   const handleChange = (e, index) => {
     const value = e.target.value;
-
-    // Only allow numbers
     if (value && !/^\d+$/.test(value)) return;
 
-    // Update the OTP array
     const newOtp = [...otp];
-
-    // Only take the last character if someone pastes multiple digits
     newOtp[index] = value.substring(value.length - 1);
     setOtp(newOtp);
 
-    // Auto-focus next input if a value is entered
-    if (value && index < 5) {
-      inputRefs.current[index + 1].focus();
-    }
+    if (value && index < 5) inputRefs.current[index + 1].focus();
   };
 
   const handleKeyDown = (e, index) => {
-    // Handle backspace
     if (e.key === "Backspace") {
       if (!otp[index] && index > 0) {
-        // If current input is empty and backspace is pressed, focus previous input
         const newOtp = [...otp];
         newOtp[index - 1] = "";
         setOtp(newOtp);
@@ -87,18 +72,14 @@ const OTPVerify = () => {
   const handlePaste = (e) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData("text");
-
-    // Only process if it looks like an OTP
     if (!/^\d+$/.test(pastedData)) return;
 
     const newOtp = [...otp];
     for (let i = 0; i < Math.min(pastedData.length, 6); i++) {
       newOtp[i] = pastedData[i];
     }
-
     setOtp(newOtp);
 
-    // Focus on the next empty field or the last field
     const lastFilledIndex = Math.min(pastedData.length - 1, 5);
     if (inputRefs.current[lastFilledIndex + 1]) {
       inputRefs.current[lastFilledIndex + 1].focus();
@@ -113,8 +94,6 @@ const OTPVerify = () => {
     setError(null);
 
     const otpString = otp.join("");
-
-    // Validate OTP length
     if (otpString.length !== 6) {
       setError("Please enter all 6 digits of the OTP");
       setLoading(false);
@@ -124,10 +103,7 @@ const OTPVerify = () => {
     try {
       const response = await axios.post(
         "http://localhost:4000/auth/verify-otp",
-        {
-          email,
-          otp: otpString,
-        }
+        { email, otp: otpString }
       );
 
       if (response.status === 200) {
@@ -139,9 +115,7 @@ const OTPVerify = () => {
           title: "OTP Verified!",
           text: "Your OTP has been verified successfully.",
           confirmButtonText: "OK",
-        }).then(() => {
-          navigate("/");
-        });
+        }).then(() => navigate("/"));
       } else {
         setError(response.data.message || "OTP verification failed");
       }
@@ -161,9 +135,7 @@ const OTPVerify = () => {
     try {
       const response = await axios.post(
         "http://localhost:4000/auth/resend-otp",
-        {
-          email,
-        }
+        { email }
       );
 
       if (response.status === 200) {
@@ -172,7 +144,6 @@ const OTPVerify = () => {
           title: "OTP Resent!",
           text: "A new OTP has been sent to your email.",
         });
-        // Reset countdown
         setCountdown(60);
         setCountdownActive(true);
       } else {
@@ -189,7 +160,6 @@ const OTPVerify = () => {
 
   return (
     <div className="min-h-screen bg-brand-light">
-      {/* WRAPPER */}
       <section className="section-shell pt-28 pb-20 flex justify-center items-start">
         <div
           data-aos="fade-up"
@@ -210,7 +180,6 @@ const OTPVerify = () => {
             </p>
           </div>
 
-          {/* Error Alert */}
           {error && (
             <div
               className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg"
@@ -220,7 +189,6 @@ const OTPVerify = () => {
             </div>
           )}
 
-          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
@@ -245,9 +213,30 @@ const OTPVerify = () => {
                   />
                 ))}
               </div>
+
+              {/* Copy OTP Button */}
+              {otp.join("").length === 6 && (
+                <div className="text-center mt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(otp.join(""));
+                      Swal.fire({
+                        icon: "success",
+                        title: "Copied!",
+                        text: "OTP code copied to clipboard",
+                        timer: 1500,
+                        showConfirmButton: false,
+                      });
+                    }}
+                    className="text-sm text-brand-primary hover:underline font-medium"
+                  >
+                    Copy OTP
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -283,7 +272,6 @@ const OTPVerify = () => {
             </button>
           </form>
 
-          {/* Resend OTP Section */}
           <div className="text-center mt-6 pt-4 border-t border-gray-200">
             <p className="text-gray-600 text-sm mb-2">
               Didn't receive the code?
