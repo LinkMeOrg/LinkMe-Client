@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import DashboardHeader from "../../components/Dashboard/overView/DashboardHeader";
 import StatsGrid from "../../components/Dashboard/overView/StatsGrid";
-import ProfilesSection from "../../components/Dashboard/overview/Profilessection";
-import RecentActivity from "../../components/Dashboard/overview/Recentactivity";
-import ProfilePerformance from "../../components/Dashboard/overview/Profileperformance";
-import QuickActions from "../../components/Dashboard/overview/Quickactions";
-import LoadingSpinner from "../../components/Dashboard/overview/Loadingspinner";
+import ProfilesSection from "../../components/Dashboard/overView/ProfilesSection";
+import RecentActivity from "../../components/Dashboard/overView/RecentActivity";
+import ProfilePerformance from "../../components/Dashboard/overView/ProfilePerformance";
+import QuickActions from "../../components/Dashboard/overView/QuickActions";
+import LoadingSpinner from "../../components/Dashboard/overView/LoadingSpinner";
 
 export default function DashboardOverview() {
   const [loading, setLoading] = useState(true);
