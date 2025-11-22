@@ -15,7 +15,6 @@ const SignUp = () => {
     { name: "Kuwait", code: "+965", shortcut: "KW" },
     { name: "USA", code: "+1", shortcut: "US" },
     { name: "UK", code: "+44", shortcut: "GB" },
-    { name: "Canada", code: "+1", shortcut: "CA" },
     { name: "Australia", code: "+61", shortcut: "AU" },
     { name: "Germany", code: "+49", shortcut: "DE" },
     { name: "France", code: "+33", shortcut: "FR" },

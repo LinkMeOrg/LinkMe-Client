@@ -49,24 +49,42 @@ const TEMPLATES = [
     name: "Modern",
     preview: "Clean & professional",
     description: "A clean, professional design perfect for business cards",
+    icon: "✨",
   },
   {
     id: "gradient",
     name: "Gradient",
-    preview: "Soft blue gradient",
+    preview: "Soft gradient flow",
     description: "Smooth gradient background with modern aesthetics",
+    icon: "🌈",
   },
   {
     id: "glass",
     name: "Glassmorphism",
-    preview: "Frosted card",
+    preview: "Frosted glass effect",
     description: "Trendy frosted glass effect with transparency",
+    icon: "💎",
   },
   {
     id: "dark",
     name: "Dark Mode",
-    preview: "Night style",
+    preview: "Bold & mysterious",
     description: "Sleek dark theme for a bold statement",
+    icon: "🌙",
+  },
+  {
+    id: "neon",
+    name: "Neon",
+    preview: "Vibrant & electric",
+    description: "Eye-catching neon glow effects",
+    icon: "⚡",
+  },
+  {
+    id: "elegant",
+    name: "Elegant",
+    preview: "Sophisticated luxury",
+    description: "Premium design with elegant touches",
+    icon: "👑",
   },
 ];
 
@@ -122,41 +140,34 @@ export default function CreateCard() {
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
 
-    // ✅ NEW: Restore saved data from localStorage
     const savedFormData = localStorage.getItem("createCardFormData");
     if (savedFormData) {
       try {
         const parsedData = JSON.parse(savedFormData);
 
-        // Restore profile type
         if (parsedData.profileType) {
           setProfileType(parsedData.profileType);
         }
 
-        // Restore template
         if (parsedData.selectedTemplate) {
           setSelectedTemplate(parsedData.selectedTemplate);
         }
 
-        // Restore personal data
         if (parsedData.personalData) {
           setPersonalData(parsedData.personalData);
         }
 
-        // Restore business data
         if (parsedData.businessData) {
           setBusinessData(parsedData.businessData);
         }
 
-        // Restore social links
         if (parsedData.socialLinks) {
           setSocialLinks(parsedData.socialLinks);
         }
 
-        // Clear the saved data after restoration
+        localStorage.setItem("createCardFormDataRestored", "true");
         localStorage.removeItem("createCardFormData");
 
-        // Show success message
         Swal.fire({
           icon: "success",
           title: "Welcome Back!",
@@ -172,11 +183,17 @@ export default function CreateCard() {
   }, []);
 
   const updatePersonalData = (updates) => {
-    setPersonalData((prev) => ({ ...prev, ...updates }));
+    setPersonalData((prev) => {
+      const newData = { ...prev, ...updates };
+      return newData;
+    });
   };
 
   const updateBusinessData = (updates) => {
-    setBusinessData((prev) => ({ ...prev, ...updates }));
+    setBusinessData((prev) => {
+      const newData = { ...prev, ...updates };
+      return newData;
+    });
   };
 
   const updateSocialLinks = (platform, value) => {
@@ -185,19 +202,21 @@ export default function CreateCard() {
 
   const getCurrentProfile = () => {
     const data = profileType === "personal" ? personalData : businessData;
-    return {
+    const profile = {
       name: data.name,
       title: data.title,
       bio: data.bio,
       color: data.color,
-      image: profileType === "personal" ? data.image : data.logo,
+      image: data.image,
+      imageFile: data.imageFile,
       designMode: data.designMode,
       aiPrompt: data.aiPrompt,
       aiBackground: data.aiBackground,
+      aiGeneratedLogo: data.aiGeneratedLogo,
     };
+    return profile;
   };
 
-  // ✅ NEW: Save form data to localStorage
   const saveFormDataToLocalStorage = () => {
     const formDataToSave = {
       profileType,
@@ -212,7 +231,6 @@ export default function CreateCard() {
   const handleCreateProfile = async (e) => {
     const token = localStorage.getItem("token");
 
-    // ✅ NEW: If not logged in, save data and redirect to login
     if (!token) {
       saveFormDataToLocalStorage();
 

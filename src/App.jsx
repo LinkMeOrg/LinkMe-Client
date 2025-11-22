@@ -108,7 +108,7 @@ const AppContent = () => {
         <Route path="/u/:slug" element={<PublicProfile />} />
         <Route path="/create-card" element={<CreateCard />} />
         <Route path="/gallery" element={<Gellary />} />
-
+        <Route path="/not-found" element={<NotFound />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 

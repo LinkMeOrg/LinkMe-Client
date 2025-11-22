@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import Swal from "sweetalert2";
 
-// Match the exact ENUM from your Sequelize model
 const PLATFORM_ENUM = [
   { value: "website", label: "Website" },
   { value: "linkedin", label: "LinkedIn" },
@@ -23,74 +22,90 @@ export default function AddSocialLinkModal({
   const [platform, setPlatform] = useState("");
   const [url, setUrl] = useState("");
   const [countryCode, setCountryCode] = useState("+1");
+  const [whatsAppType, setWhatsAppType] = useState("number"); // number or link
 
   const countryCodes = [
-    { name: "Jordan", code: "+962", shortcut: "JO" },
-    { name: "Saudi Arabia", code: "+966", shortcut: "SA" },
-    { name: "UAE", code: "+971", shortcut: "AE" },
-    { name: "Qatar", code: "+974", shortcut: "QA" },
-    { name: "Kuwait", code: "+965", shortcut: "KW" },
-    { name: "USA", code: "+1", shortcut: "US" },
-    { name: "UK", code: "+44", shortcut: "GB" },
-    { name: "Canada", code: "+1", shortcut: "CA" },
-    { name: "Australia", code: "+61", shortcut: "AU" },
-    { name: "Germany", code: "+49", shortcut: "DE" },
-    { name: "France", code: "+33", shortcut: "FR" },
-    { name: "Italy", code: "+39", shortcut: "IT" },
-    { name: "Spain", code: "+34", shortcut: "ES" },
-    { name: "Netherlands", code: "+31", shortcut: "NL" },
-    { name: "Sweden", code: "+46", shortcut: "SE" },
-    { name: "Norway", code: "+47", shortcut: "NO" },
-    { name: "Denmark", code: "+45", shortcut: "DK" },
-    { name: "Finland", code: "+358", shortcut: "FI" },
-    { name: "Brazil", code: "+55", shortcut: "BR" },
-    { name: "Mexico", code: "+52", shortcut: "MX" },
-    { name: "Argentina", code: "+54", shortcut: "AR" },
-    { name: "South Africa", code: "+27", shortcut: "ZA" },
-    { name: "India", code: "+91", shortcut: "IN" },
-    { name: "China", code: "+86", shortcut: "CN" },
-    { name: "Japan", code: "+81", shortcut: "JP" },
-    { name: "South Korea", code: "+82", shortcut: "KR" },
-    { name: "Singapore", code: "+65", shortcut: "SG" },
-    { name: "New Zealand", code: "+64", shortcut: "NZ" },
-    { name: "Russia", code: "+7", shortcut: "RU" },
-    { name: "Turkey", code: "+90", shortcut: "TR" },
-    { name: "Egypt", code: "+20", shortcut: "EG" },
-    { name: "Morocco", code: "+212", shortcut: "MA" },
-    { name: "Nigeria", code: "+234", shortcut: "NG" },
-    { name: "Kenya", code: "+254", shortcut: "KE" },
-    { name: "Pakistan", code: "+92", shortcut: "PK" },
-    { name: "Bangladesh", code: "+880", shortcut: "BD" },
-    { name: "Thailand", code: "+66", shortcut: "TH" },
-    { name: "Vietnam", code: "+84", shortcut: "VN" },
-    { name: "Philippines", code: "+63", shortcut: "PH" },
-    { name: "Malaysia", code: "+60", shortcut: "MY" },
+    { name: "Jordan", code: "+962", shortcut: "JO", flag: "🇯🇴" },
+    { name: "Saudi Arabia", code: "+966", shortcut: "SA", flag: "🇸🇦" },
+    { name: "UAE", code: "+971", shortcut: "AE", flag: "🇦🇪" },
+    { name: "Qatar", code: "+974", shortcut: "QA", flag: "🇶🇦" },
+    { name: "Kuwait", code: "+965", shortcut: "KW", flag: "🇰🇼" },
+    { name: "USA", code: "+1", shortcut: "US", flag: "🇺🇸" },
+    { name: "UK", code: "+44", shortcut: "GB", flag: "🇬🇧" },
+    { name: "Australia", code: "+61", shortcut: "AU", flag: "🇦🇺" },
+    { name: "Germany", code: "+49", shortcut: "DE", flag: "🇩🇪" },
+    { name: "France", code: "+33", shortcut: "FR", flag: "🇫🇷" },
+    { name: "Italy", code: "+39", shortcut: "IT", flag: "🇮🇹" },
+    { name: "Spain", code: "+34", shortcut: "ES", flag: "🇪🇸" },
   ];
 
-  // Filter out platforms that already exist
   const availablePlatforms = PLATFORM_ENUM.filter(
     (p) => !existingPlatforms.includes(p.value)
   );
 
-  // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       setPlatform("");
       setUrl("");
       setCountryCode("+1");
+      setWhatsAppType("number");
     }
   }, [isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let trimmedUrl = url.trim();
 
-    // Validate URL for web platforms
+    // Email validation
+    if (platform === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmedUrl)) {
+        Swal.fire({
+          title: "Invalid Email",
+          text: "Please enter a valid email address.",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+    }
+
+    // WhatsApp validation
+    if (platform === "whatsapp") {
+      if (whatsAppType === "number") {
+        const phoneRegex = /^\+?\d{7,15}$/;
+        if (!phoneRegex.test(trimmedUrl.replace(/\D/g, ""))) {
+          Swal.fire({
+            title: "Invalid WhatsApp Number",
+            text: "Please enter a valid phone number.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+        trimmedUrl = `https://wa.me/${trimmedUrl.replace(/\D/g, "")}`;
+      } else {
+        const whatsappUrlRegex =
+          /^https?:\/\/(wa\.me|api\.whatsapp\.com)\/\d+$/i;
+        if (!whatsappUrlRegex.test(trimmedUrl)) {
+          Swal.fire({
+            title: "Invalid WhatsApp Link",
+            text: "Please enter a valid WhatsApp link.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+      }
+    }
+
+    // Other URL validation
     if (
       ["website", "linkedin", "instagram", "twitter", "github"].includes(
         platform
       )
     ) {
-      if (!/^https?:\/\//i.test(url)) {
+      if (!/^https?:\/\//i.test(trimmedUrl)) {
         Swal.fire({
           title: "Invalid URL",
           text: "URL must start with http:// or https://",
@@ -101,13 +116,12 @@ export default function AddSocialLinkModal({
       }
     }
 
-    // Prepend country code for phone/whatsapp
-    let finalUrl = url;
-    if (["phone", "whatsapp"].includes(platform)) {
-      finalUrl = `${countryCode}${url.replace(/\D/g, "")}`; // keep only digits
+    // Phone number
+    if (platform === "phone") {
+      trimmedUrl = `${countryCode}${trimmedUrl.replace(/\D/g, "")}`;
     }
 
-    onAdd(platform, finalUrl);
+    onAdd(platform, trimmedUrl);
     setPlatform("");
     setUrl("");
     onClose();
@@ -132,6 +146,7 @@ export default function AddSocialLinkModal({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Platform Select */}
             <div>
               <label className="block text-sm font-semibold mb-2">
                 Platform
@@ -151,7 +166,69 @@ export default function AddSocialLinkModal({
               </select>
             </div>
 
-            {["phone", "whatsapp"].includes(platform) ? (
+            {/* WhatsApp type selection */}
+            {platform === "whatsapp" && (
+              <div className="flex gap-4 items-center mb-2">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="whatsappType"
+                    value="number"
+                    checked={whatsAppType === "number"}
+                    onChange={() => setWhatsAppType("number")}
+                    className="form-radio"
+                  />
+                  Number
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="whatsappType"
+                    value="link"
+                    checked={whatsAppType === "link"}
+                    onChange={() => setWhatsAppType("link")}
+                    className="form-radio"
+                  />
+                  Link
+                </label>
+              </div>
+            )}
+
+            {/* Input fields */}
+            {platform === "whatsapp" ? (
+              whatsAppType === "number" ? (
+                <div className="flex gap-2">
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="border border-gray-200 rounded-xl px-3 py-2 text-sm"
+                  >
+                    {countryCodes.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.flag} {c.shortcut} {c.code}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm"
+                    placeholder="Enter WhatsApp number"
+                    required
+                  />
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm"
+                  placeholder="Enter full WhatsApp link"
+                  required
+                />
+              )
+            ) : platform === "phone" ? (
               <div className="flex gap-2">
                 <select
                   value={countryCode}
@@ -160,7 +237,7 @@ export default function AddSocialLinkModal({
                 >
                   {countryCodes.map((c) => (
                     <option key={c.code} value={c.code}>
-                      {c.shortcut} {c.code}
+                      {c.flag} {c.shortcut} {c.code}
                     </option>
                   ))}
                 </select>
@@ -189,6 +266,7 @@ export default function AddSocialLinkModal({
               </div>
             )}
 
+            {/* Buttons */}
             <div className="flex justify-end gap-2">
               <button
                 type="button"
@@ -201,8 +279,7 @@ export default function AddSocialLinkModal({
                 type="submit"
                 className="px-4 py-2 rounded-xl bg-brand-primary text-white flex items-center gap-2"
               >
-                <Plus className="w-4 h-4" />
-                Add Link
+                <Plus className="w-4 h-4" /> Add Link
               </button>
             </div>
           </form>

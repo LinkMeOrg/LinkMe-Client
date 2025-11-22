@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-import Modals from "../components/PublicProfile/Modals";
-import ProfileCardWrapper from "../components/PublicProfile/ProfileCardWrapper";
 import Swal from "sweetalert2";
+import ProfileCardDesktop from "../components/PublicProfile/ProfileCardDesktop";
+import ProfileCardMobile from "../components/PublicProfile/ProfileCardMobile";
+import ShareModal from "../components/PublicProfile/Modals";
+import QRModal from "../components/PublicProfile/QRModal";
+import NotFound from "./NotFound";
+import { Loader2, AlertTriangle } from "lucide-react";
 
 export default function PublicProfile() {
   const { slug } = useParams();
@@ -13,7 +16,6 @@ export default function PublicProfile() {
   const [error, setError] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
-  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -160,43 +162,21 @@ END:VCARD`;
     window.open(`https://wa.me/${cleanNumber}`);
   };
 
-  const getPlatformIcon = (platform) => {
-    const icons = {
-      /* --- all icons unchanged, paste them as is from original code --- */
-    };
-    return (
-      icons[platform] || (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-          />
-        </svg>
-      )
-    );
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
-        {/* loading UI stays the same */}
+        <div className="relative">
+          <Loader2 className="w-16 h-16 text-blue-500 animate-spin" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-8 h-8 bg-blue-500/20 rounded-full animate-pulse"></div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error || !profile) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
-        {/* error UI stays the same */}
-      </div>
-    );
+    return <NotFound />;
   }
 
   const phoneLink = profile.socialLinks?.find((l) => l.platform === "phone");
@@ -206,9 +186,10 @@ END:VCARD`;
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black py-8 px-4">
-      <div className="max-w-md mx-auto">
-        <ProfileCardWrapper
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      {/* Desktop View (hidden on mobile) */}
+      <div className="hidden lg:block">
+        <ProfileCardDesktop
           profile={profile}
           phoneLink={phoneLink}
           emailLink={emailLink}
@@ -218,36 +199,40 @@ END:VCARD`;
           handleWhatsApp={handleWhatsApp}
           handleDownloadVCard={handleDownloadVCard}
           handleSocialClick={handleSocialClick}
-          getPlatformIcon={getPlatformIcon}
           setShowShareModal={setShowShareModal}
           setShowQRModal={setShowQRModal}
-          isFlipped={isFlipped}
-          setIsFlipped={setIsFlipped}
         />
-
-        {/* POWERED BY */}
-        <div className="text-center mt-8">
-          <p className="text-gray-500 text-sm flex items-center justify-center gap-2">
-            Powered by
-            <a
-              href="/"
-              className="text-blue-400 font-semibold hover:text-blue-300"
-            >
-              Dot LinkMe
-            </a>
-          </p>
-        </div>
       </div>
 
-      {/* MODALS */}
-      <Modals
-        showShareModal={showShareModal}
-        setShowShareModal={setShowShareModal}
-        handleShare={handleShare}
-        showQRModal={showQRModal}
-        setShowQRModal={setShowQRModal}
+      {/* Mobile View (hidden on desktop) */}
+      <div className="lg:hidden">
+        <ProfileCardMobile
+          profile={profile}
+          phoneLink={phoneLink}
+          emailLink={emailLink}
+          whatsappLink={whatsappLink}
+          handleCall={handleCall}
+          handleEmail={handleEmail}
+          handleWhatsApp={handleWhatsApp}
+          handleDownloadVCard={handleDownloadVCard}
+          handleSocialClick={handleSocialClick}
+          setShowShareModal={setShowShareModal}
+          setShowQRModal={setShowQRModal}
+        />
+      </div>
+
+      {/* Modals */}
+      <ShareModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        onShare={handleShare}
+      />
+
+      <QRModal
+        isOpen={showQRModal}
+        onClose={() => setShowQRModal(false)}
         profile={profile}
-        handleDownloadQR={handleDownloadQR}
+        onDownload={handleDownloadQR}
       />
     </div>
   );
