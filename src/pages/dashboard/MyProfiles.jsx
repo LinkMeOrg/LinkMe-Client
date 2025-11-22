@@ -6,7 +6,7 @@ import ProfilesStats from "../../components/Dashboard/MyProfile/ProfilesStats";
 import ProfilesFilters from "../../components/Dashboard/MyProfile/ProfilesFilters";
 import ProfilesGrid from "../../components/Dashboard/MyProfile/ProfilesGrid";
 import ProfilesList from "../../components/Dashboard/MyProfile/ProfilesList";
-import LoadingSpinner from "../../components/Dashboard/overView/LoadingSpinner";
+import LoadingSpinner from "../../components/Dashboard/MyProfile/LoadingSpinner";
 
 export default function MyProfiles() {
   const [profiles, setProfiles] = useState([]);

@@ -7,7 +7,7 @@ import BasicInfoForm from "../../components/Dashboard/EditProfile/BasicInfoForm"
 import SocialLinksTab from "../../components/Dashboard/EditProfile/SocialLinksTab";
 import SettingsTab from "../../components/Dashboard/EditProfile/SettingsTab";
 import ProfileSidebar from "../../components/Dashboard/EditProfile/ProfileSidebar";
-import LoadingSpinner from "../../components/Dashboard/overView/Loadingspinner";
+import LoadingSpinner from "../../components/Dashboard/EditProfile/LoadingSpinner";
 import AddSocialLinkModal from "../../components/AddSocialLinkModal";
 import { X } from "lucide-react";
 
