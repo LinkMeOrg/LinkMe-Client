@@ -110,9 +110,13 @@ export default function PasswordSettings() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put("http://localhost:4000/api/me/password", passwordData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(
+        "https://linkme-api.onrender.com/api/me/password",
+        passwordData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setMessage({ type: "success", text: "Password changed successfully!" });
       setPasswordData({

@@ -20,11 +20,14 @@ const Profile = () => {
           throw new Error("No token found");
         }
 
-        const response = await axios.get("http://localhost:4000/api/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "https://linkme-api.onrender.com/api/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setUserData(response.data);
         setName(response.data.name); // Initialize form fields with current data
@@ -49,7 +52,7 @@ const Profile = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:4000/api/me",
+        "https://linkme-api.onrender.com/api/me",
         { name, email },
         {
           headers: {

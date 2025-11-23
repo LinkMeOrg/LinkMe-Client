@@ -3,11 +3,11 @@ import { Facebook } from "lucide-react";
 
 const SocialAuthButtons = () => {
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:4000/auth/google";
+    window.location.href = "https://linkme-api.onrender.com/auth/google";
   };
 
   const handleFacebookLogin = () => {
-    window.location.href = "http://localhost:4000/auth/facebook";
+    window.location.href = "https://linkme-api.onrender.com/auth/facebook";
   };
 
   return (

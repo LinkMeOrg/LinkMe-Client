@@ -140,7 +140,7 @@ const SignUp = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:4000/auth/signup",
+        "https://linkme-api.onrender.com/auth/signup",
         payload
       );
 

@@ -22,9 +22,12 @@ export default function MyProfiles() {
   const fetchProfiles = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/profiles", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        "https://linkme-api.onrender.com/api/profiles",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const data = await response.json();
       setProfiles(data.data || []);
@@ -39,7 +42,7 @@ export default function MyProfiles() {
     try {
       const token = localStorage.getItem("token");
       await fetch(
-        `http://localhost:4000/api/profiles/${profileId}/toggle-status`,
+        `https://linkme-api.onrender.com/api/profiles/${profileId}/toggle-status`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },
@@ -72,7 +75,7 @@ export default function MyProfiles() {
 
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:4000/api/profiles/${profileId}`, {
+      await fetch(`https://linkme-api.onrender.com/api/profiles/${profileId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

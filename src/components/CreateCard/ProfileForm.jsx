@@ -32,7 +32,7 @@ export default function ProfileForm({
           return;
         }
 
-        const response = await fetch("http://localhost:4000/api/me", {
+        const response = await fetch("https://linkme-api.onrender.com/api/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

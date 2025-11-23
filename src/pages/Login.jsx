@@ -39,10 +39,13 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post("http://localhost:4000/auth/login", {
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        "https://linkme-api.onrender.com/auth/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
 
       if (response.data.token && response.data.user) {
         login(response.data.token, response.data.user);

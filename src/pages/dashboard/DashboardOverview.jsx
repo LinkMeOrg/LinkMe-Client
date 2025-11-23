@@ -24,16 +24,19 @@ export default function DashboardOverview() {
 
       const [summaryRes, profilesRes, activityRes, userRes] = await Promise.all(
         [
-          fetch("http://localhost:4000/api/dashboard/summary", {
+          fetch("https://linkme-api.onrender.com/api/dashboard/summary", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch("http://localhost:4000/api/profiles", {
+          fetch("https://linkme-api.onrender.com/api/profiles", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch("http://localhost:4000/api/dashboard/recent-activity?limit=5", {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch("http://localhost:4000/api/me", {
+          fetch(
+            "https://linkme-api.onrender.com/api/dashboard/recent-activity?limit=5",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          ),
+          fetch("https://linkme-api.onrender.com/api/me", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]

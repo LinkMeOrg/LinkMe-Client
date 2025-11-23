@@ -22,7 +22,9 @@ const VerifyAccount = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:4000/auth/resend-otp", { email });
+      await axios.post("https://linkme-api.onrender.com/auth/resend-otp", {
+        email,
+      });
 
       await Swal.fire({
         icon: "success",

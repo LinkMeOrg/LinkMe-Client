@@ -117,7 +117,7 @@ async function createProfile(profileData, token) {
 
   formData.append("socialLinks", JSON.stringify(socialLinksArray));
 
-  const response = await fetch("http://localhost:4000/api/profiles", {
+  const response = await fetch("https://linkme-api.onrender.com/api/profiles", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

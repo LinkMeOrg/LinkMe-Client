@@ -103,7 +103,7 @@ const OTPVerify = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/auth/verify-otp",
+        "https://linkme-api.onrender.com/auth/verify-otp",
         { email, otp: otpString }
       );
 
@@ -142,7 +142,7 @@ const OTPVerify = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/auth/resend-otp",
+        "https://linkme-api.onrender.com/auth/resend-otp",
         { email }
       );
 

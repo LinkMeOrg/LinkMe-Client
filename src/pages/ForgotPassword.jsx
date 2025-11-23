@@ -23,7 +23,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/auth/forgot-password",
+        "https://linkme-api.onrender.com/auth/forgot-password",
         {
           email,
         }

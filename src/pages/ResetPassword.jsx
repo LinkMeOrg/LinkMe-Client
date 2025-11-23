@@ -61,7 +61,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/auth/reset-password",
+        "https://linkme-api.onrender.com/auth/reset-password",
         {
           token,
           newPassword,

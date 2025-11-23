@@ -15,9 +15,12 @@ export default function ProfileSettings() {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:4000/api/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        "https://linkme-api.onrender.com/api/me",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setUser(response.data);
     } catch (error) {
@@ -40,7 +43,7 @@ export default function ProfileSettings() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        "http://localhost:4000/api/me",
+        "https://linkme-api.onrender.com/api/me",
         {
           firstName: user.firstName,
           secondName: user.secondName,

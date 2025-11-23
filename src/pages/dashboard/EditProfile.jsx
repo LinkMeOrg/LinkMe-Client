@@ -29,9 +29,12 @@ export default function EditProfile() {
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:4000/api/profiles/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `https://linkme-api.onrender.com/api/profiles/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const data = await response.json();
       setProfile(data.data);
@@ -46,7 +49,7 @@ export default function EditProfile() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:4000/api/social-links/profile/${id}?includeHidden=true`,
+        `https://linkme-api.onrender.com/api/social-links/profile/${id}?includeHidden=true`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -77,11 +80,14 @@ export default function EditProfile() {
         formData.append("avatar", profile.avatarFile);
       }
 
-      const response = await fetch(`http://localhost:4000/api/profiles/${id}`, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
+      const response = await fetch(
+        `https://linkme-api.onrender.com/api/profiles/${id}`,
+        {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
 
       const data = await response.json();
 
@@ -128,18 +134,21 @@ export default function EditProfile() {
   const handleAddSocialLink = async (platform, url) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/social-links", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          profileId: id,
-          platform,
-          url,
-        }),
-      });
+      const response = await fetch(
+        "https://linkme-api.onrender.com/api/social-links",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            profileId: id,
+            platform,
+            url,
+          }),
+        }
+      );
 
       if (response.ok) {
         fetchSocialLinks();
@@ -165,10 +174,13 @@ export default function EditProfile() {
 
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:4000/api/social-links/${linkId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await fetch(
+        `https://linkme-api.onrender.com/api/social-links/${linkId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setSocialLinks(socialLinks.filter((link) => link.id !== linkId));
 
@@ -193,7 +205,7 @@ export default function EditProfile() {
     try {
       const token = localStorage.getItem("token");
       await fetch(
-        `http://localhost:4000/api/social-links/${linkId}/toggle-visibility`,
+        `https://linkme-api.onrender.com/api/social-links/${linkId}/toggle-visibility`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },

@@ -33,7 +33,7 @@ const ContactUs = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:4000/api/create/contact-messages",
+        "https://linkme-api.onrender.com/api/create/contact-messages",
         {
           method: "POST",
           headers: {

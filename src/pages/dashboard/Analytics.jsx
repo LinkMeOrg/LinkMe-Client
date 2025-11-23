@@ -20,9 +20,12 @@ export default function Analytics() {
   const fetchProfiles = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:4000/api/profiles", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        "https://linkme-api.onrender.com/api/profiles",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const data = await response.json();
       setProfiles(data.data || []);
@@ -40,7 +43,7 @@ export default function Analytics() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:4000/api/analytics/profile/${profileId}?days=${period}`,
+        `https://linkme-api.onrender.com/api/analytics/profile/${profileId}?days=${period}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
