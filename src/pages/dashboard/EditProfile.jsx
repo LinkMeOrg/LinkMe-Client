@@ -20,6 +20,7 @@ export default function EditProfile() {
   const [socialLinks, setSocialLinks] = useState([]);
   const [activeTab, setActiveTab] = useState("basic");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     fetchProfile();
@@ -30,7 +31,7 @@ export default function EditProfile() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://linkme-api.onrender.com/api/profiles/${id}`,
+        `${API_URL}/api/profiles/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -49,7 +50,7 @@ export default function EditProfile() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://linkme-api.onrender.com/api/social-links/profile/${id}?includeHidden=true`,
+        `${API_URL}/api/social-links/profile/${id}?includeHidden=true`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -81,7 +82,7 @@ export default function EditProfile() {
       }
 
       const response = await fetch(
-        `https://linkme-api.onrender.com/api/profiles/${id}`,
+        `${API_URL}/api/profiles/${id}`,
         {
           method: "PUT",
           headers: { Authorization: `Bearer ${token}` },
@@ -135,7 +136,7 @@ export default function EditProfile() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://linkme-api.onrender.com/api/social-links",
+        `${API_URL}/api/social-links`,
         {
           method: "POST",
           headers: {
@@ -175,7 +176,7 @@ export default function EditProfile() {
     try {
       const token = localStorage.getItem("token");
       await fetch(
-        `https://linkme-api.onrender.com/api/social-links/${linkId}`,
+        `${API_URL}/api/social-links/${linkId}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -205,7 +206,7 @@ export default function EditProfile() {
     try {
       const token = localStorage.getItem("token");
       await fetch(
-        `https://linkme-api.onrender.com/api/social-links/${linkId}/toggle-visibility`,
+        `${API_URL}/api/social-links/${linkId}/toggle-visibility`,
         {
           method: "PATCH",
           headers: { Authorization: `Bearer ${token}` },

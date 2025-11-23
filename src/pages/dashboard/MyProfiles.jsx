@@ -14,6 +14,7 @@ export default function MyProfiles() {
   const [filter, setFilter] = useState("all");
   const [viewMode, setViewMode] = useState("grid");
   const [showQR, setShowQR] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     fetchProfiles();
@@ -22,12 +23,9 @@ export default function MyProfiles() {
   const fetchProfiles = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        "https://linkme-api.onrender.com/api/profiles",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await fetch(`${API_URL}/api/profiles`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       const data = await response.json();
       setProfiles(data.data || []);
@@ -41,13 +39,10 @@ export default function MyProfiles() {
   const handleToggleStatus = async (profileId, currentStatus) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(
-        `https://linkme-api.onrender.com/api/profiles/${profileId}/toggle-status`,
-        {
-          method: "PATCH",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await fetch(`${API_URL}/api/profiles/${profileId}/toggle-status`, {
+        method: "PATCH",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setProfiles(
         profiles.map((p) =>
@@ -75,7 +70,7 @@ export default function MyProfiles() {
 
     try {
       const token = localStorage.getItem("token");
-      await fetch(`https://linkme-api.onrender.com/api/profiles/${profileId}`, {
+      await fetch(`${API_URL}/api/profiles/${profileId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

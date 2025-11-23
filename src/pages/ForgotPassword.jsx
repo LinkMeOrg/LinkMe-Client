@@ -10,6 +10,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -23,7 +24,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await axios.post(
-        "https://linkme-api.onrender.com/auth/forgot-password",
+        `${API_URL}/auth/forgot-password`,
         {
           email,
         }

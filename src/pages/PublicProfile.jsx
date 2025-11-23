@@ -16,6 +16,7 @@ export default function PublicProfile() {
   const [error, setError] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [showQRModal, setShowQRModal] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     fetchProfile();
@@ -23,9 +24,7 @@ export default function PublicProfile() {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch(
-        `https://linkme-api.onrender.com/api/profiles/public/${slug}`
-      );
+      const response = await fetch(`${API_URL}/api/profiles/public/${slug}`);
 
       if (!response.ok) {
         throw new Error("Profile not found");
@@ -43,14 +42,11 @@ export default function PublicProfile() {
 
   const trackView = async () => {
     try {
-      await fetch(
-        `https://linkme-api.onrender.com/api/analytics/track-view/${slug}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ source: "link" }),
-        }
-      );
+      await fetch(`${API_URL}/api/analytics/track-view/${slug}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: "link" }),
+      });
     } catch (err) {
       console.error("Error tracking view:", err);
     }
@@ -58,12 +54,9 @@ export default function PublicProfile() {
 
   const handleSocialClick = async (linkId, url) => {
     try {
-      await fetch(
-        `https://linkme-api.onrender.com/api/social-links/${linkId}/click`,
-        {
-          method: "POST",
-        }
-      );
+      await fetch(`${API_URL}/api/social-links/${linkId}/click`, {
+        method: "POST",
+      });
     } catch (err) {
       console.error("Error tracking click:", err);
     }

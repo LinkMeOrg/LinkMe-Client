@@ -16,6 +16,8 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
+
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -60,13 +62,10 @@ const ResetPassword = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        "https://linkme-api.onrender.com/auth/reset-password",
-        {
-          token,
-          newPassword,
-        }
-      );
+      const response = await axios.post(`${API_URL}/auth/reset-password`, {
+        token,
+        newPassword,
+      });
       setMessage(response.data.message);
       setRedirecting(true); // Start countdown
     } catch (error) {

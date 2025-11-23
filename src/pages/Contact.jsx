@@ -12,6 +12,8 @@ const ContactUs = () => {
     message: "",
   });
 
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
+
   // INIT AOS
   useEffect(() => {
     AOS.init({
@@ -33,7 +35,7 @@ const ContactUs = () => {
 
     try {
       const response = await fetch(
-        "https://linkme-api.onrender.com/api/create/contact-messages",
+        `${API_URL}/api/create/contact-messages`,
         {
           method: "POST",
           headers: {

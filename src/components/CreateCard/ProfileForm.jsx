@@ -31,8 +31,9 @@ export default function ProfileForm({
           localStorage.removeItem("createCardFormDataRestored");
           return;
         }
+        const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
-        const response = await fetch("https://linkme-api.onrender.com/api/me", {
+        const response = await fetch(`${API_URL}/api/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

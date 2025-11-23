@@ -116,8 +116,9 @@ async function createProfile(profileData, token) {
     .map(([platform, url]) => ({ platform, url }));
 
   formData.append("socialLinks", JSON.stringify(socialLinksArray));
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
-  const response = await fetch("https://linkme-api.onrender.com/api/profiles", {
+  const response = await fetch(`${API_URL}/api/profiles`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,

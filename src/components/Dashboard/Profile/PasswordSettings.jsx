@@ -107,16 +107,13 @@ export default function PasswordSettings() {
     }
 
     setSaving(true);
+    const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        "https://linkme-api.onrender.com/api/me/password",
-        passwordData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.put(`${API_URL}/api/me/password`, passwordData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setMessage({ type: "success", text: "Password changed successfully!" });
       setPasswordData({

@@ -8,6 +8,8 @@ export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
+
   const { logout } = useAuth();
 
   useEffect(() => {
@@ -16,7 +18,7 @@ export default function DashboardLayout() {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const response = await fetch("https://linkme-api.onrender.com/api/me", {
+        const response = await fetch(`${API_URL}/api/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

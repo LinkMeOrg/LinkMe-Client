@@ -6,6 +6,7 @@ export default function Analytics() {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [analytics, setAnalytics] = useState(null);
   const [days, setDays] = useState(30);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     fetchProfiles();
@@ -21,7 +22,7 @@ export default function Analytics() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://linkme-api.onrender.com/api/profiles",
+        `${API_URL}/api/profiles`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -43,7 +44,7 @@ export default function Analytics() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://linkme-api.onrender.com/api/analytics/profile/${profileId}?days=${period}`,
+        `${API_URL}/api/analytics/profile/${profileId}?days=${period}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

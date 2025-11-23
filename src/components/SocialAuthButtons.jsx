@@ -1,13 +1,14 @@
-import React from "react";
 import { Facebook } from "lucide-react";
+
+const API_URL = import.meta.env.VITE_API_URL; 
 
 const SocialAuthButtons = () => {
   const handleGoogleLogin = () => {
-    window.location.href = "https://linkme-api.onrender.com/auth/google";
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   const handleFacebookLogin = () => {
-    window.location.href = "https://linkme-api.onrender.com/auth/facebook";
+    window.location.href = `${API_URL}/auth/facebook`;
   };
 
   return (

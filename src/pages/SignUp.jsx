@@ -68,6 +68,7 @@ const SignUp = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // ✅ NEW: Get location state
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -140,7 +141,7 @@ const SignUp = () => {
       };
 
       const response = await axios.post(
-        "https://linkme-api.onrender.com/auth/signup",
+        `${API_URL}/auth/signup`,
         payload
       );
 

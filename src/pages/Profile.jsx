@@ -10,6 +10,8 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
+  
 
   // Fetch user data on component mount
   useEffect(() => {
@@ -21,7 +23,7 @@ const Profile = () => {
         }
 
         const response = await axios.get(
-          "https://linkme-api.onrender.com/api/me",
+          `${API_URL}/api/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -52,7 +54,7 @@ const Profile = () => {
       }
 
       const response = await axios.put(
-        "https://linkme-api.onrender.com/api/me",
+        `${API_URL}/api/me`,
         { name, email },
         {
           headers: {

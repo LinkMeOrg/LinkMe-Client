@@ -10,6 +10,7 @@ const VerifyAccount = () => {
   const location = useLocation(); // ✅ NEW: Get location state
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   const returnTo = location.state?.returnTo; // ✅ NEW: Get returnTo from state
 
@@ -22,7 +23,7 @@ const VerifyAccount = () => {
     setLoading(true);
 
     try {
-      await axios.post("https://linkme-api.onrender.com/auth/resend-otp", {
+      await axios.post(`${API_URL}/auth/resend-otp`, {
         email,
       });
 

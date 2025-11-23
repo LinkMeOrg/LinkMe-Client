@@ -7,6 +7,7 @@ export default function ProfileSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     fetchUserData();
@@ -16,7 +17,7 @@ export default function ProfileSettings() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "https://linkme-api.onrender.com/api/me",
+        `${API_URL}/api/me`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -43,7 +44,7 @@ export default function ProfileSettings() {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        "https://linkme-api.onrender.com/api/me",
+        `${API_URL}/api/me`,
         {
           firstName: user.firstName,
           secondName: user.secondName,

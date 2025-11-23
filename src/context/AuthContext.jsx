@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(refreshTokenFromStorage);
   const [user, setUser] = useState(parsedUser);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   // Check if token is expired
   const isTokenExpired = (token) => {
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const response = await fetch(
-        "https://linkme-api.onrender.com/api/auth/refresh-token",
+        `${API_URL}/api/auth/refresh-token`,
         {
           method: "POST",
           headers: {
@@ -110,7 +111,7 @@ export const AuthProvider = ({ children }) => {
     // Call logout API to invalidate refresh token
     if (user?.id) {
       try {
-        await fetch("https://linkme-api.onrender.com/api/auth/logout", {
+        await fetch(`${API_URL}/api/auth/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

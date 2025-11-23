@@ -17,6 +17,7 @@ const OTPVerify = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const inputRefs = useRef([]);
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   const email = state?.email;
   const returnTo = state?.returnTo; // ✅ NEW: Get returnTo from state
@@ -103,7 +104,7 @@ const OTPVerify = () => {
 
     try {
       const response = await axios.post(
-        "https://linkme-api.onrender.com/auth/verify-otp",
+        `${API_URL}/auth/verify-otp`,
         { email, otp: otpString }
       );
 
@@ -144,7 +145,7 @@ const OTPVerify = () => {
 
     try {
       const response = await axios.post(
-        "https://linkme-api.onrender.com/auth/resend-otp",
+        `${API_URL}/auth/resend-otp`,
         { email }
       );
 

@@ -19,6 +19,7 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // ✅ NEW: Get location state
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -40,7 +41,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://linkme-api.onrender.com/auth/login",
+        `${API_URL}/auth/login`,
         {
           email: formData.email,
           password: formData.password,

@@ -13,6 +13,7 @@ export default function DashboardOverview() {
   const [profiles, setProfiles] = useState([]);
   const [recentActivity, setRecentActivity] = useState([]);
   const [userName, setUserName] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL; // For Vite
 
   useEffect(() => {
     fetchDashboardData();
@@ -24,19 +25,16 @@ export default function DashboardOverview() {
 
       const [summaryRes, profilesRes, activityRes, userRes] = await Promise.all(
         [
-          fetch("https://linkme-api.onrender.com/api/dashboard/summary", {
+          fetch(`${API_URL}/api/dashboard/summary`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch("https://linkme-api.onrender.com/api/profiles", {
+          fetch(`${API_URL}/api/profiles`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch(
-            "https://linkme-api.onrender.com/api/dashboard/recent-activity?limit=5",
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          ),
-          fetch("https://linkme-api.onrender.com/api/me", {
+          fetch(`${API_URL}/api/dashboard/recent-activity?limit=5`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${API_URL}/api/me`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]
