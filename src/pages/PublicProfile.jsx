@@ -57,17 +57,19 @@ export default function PublicProfile() {
   };
 
   const handleSocialClick = async (linkId, url) => {
-    try {
-      await fetch(
-        `https://linkme-api.onrender.com/api/social-links/${linkId}/click`,
-        {
-          method: "POST",
-        }
-      );
-    } catch (err) {
-      console.error("Error tracking click:", err);
-    }
-    window.open(url, "_blank");
+    // Ensure URL has proper protocol
+    const fullUrl =
+      url.startsWith("http://") || url.startsWith("https://")
+        ? url
+        : `https://${url}`;
+
+    // Track click first (don't await)
+    fetch(`https://linkme-api.onrender.com/api/social-links/${linkId}/click`, {
+      method: "POST",
+    }).catch((err) => console.error("Error tracking click:", err));
+
+    // Use location.href for better mobile compatibility
+    window.location.href = fullUrl;
   };
 
   const handleShare = async (method) => {

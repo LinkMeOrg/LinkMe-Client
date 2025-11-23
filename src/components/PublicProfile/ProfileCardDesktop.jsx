@@ -202,10 +202,14 @@ export default function ProfileCardDesktop({
                   {visibleLinks.map((link) => (
                     <button
                       key={link.id}
-                      onClick={() => handleSocialClick(link.id, link.url)}
-                      className="group relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/30 hover:from-white/20 hover:to-white/10 transition-all"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleSocialClick(link.id, link.url);
+                      }}
+                      type="button"
+                      className="group relative overflow-hidden bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/30 hover:from-white/20 hover:to-white/10 transition-all touch-manipulation active:scale-95"
                     >
-                      <div className="flex flex-col items-center gap-3">
+                      <div className="flex flex-col items-center gap-3 relative z-10">
                         <div className="w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                           {getPlatformIcon(link.platform)}
                         </div>
@@ -213,7 +217,7 @@ export default function ProfileCardDesktop({
                           {link.platform}
                         </span>
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-600/0 group-hover:from-blue-500/10 group-hover:to-purple-600/10 transition-all"></div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-600/0 group-hover:from-blue-500/10 group-hover:to-purple-600/10 transition-all pointer-events-none"></div>
                     </button>
                   ))}
                 </div>
