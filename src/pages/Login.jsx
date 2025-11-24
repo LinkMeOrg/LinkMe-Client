@@ -116,7 +116,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-brand-light">
-      <section className="section-shell pt-28 pb-20 flex justify-center items-start">
+      <section className="section-shell pt-20 pb-20 flex justify-center items-start">
         <div
           data-aos="fade-up"
           className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6 md:p-10"

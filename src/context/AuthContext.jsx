@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   const [refreshToken, setRefreshToken] = useState(refreshTokenFromStorage);
   const [user, setUser] = useState(parsedUser);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL; // For Vite
+  const API_URL = import.meta.env.VITE_API_URL;
 
   // Check if token is expired
   const isTokenExpired = (token) => {
@@ -43,16 +43,13 @@ export const AuthProvider = ({ children }) => {
     setIsRefreshing(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/api/auth/refresh-token`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken }),
-        }
-      );
+      const response = await fetch(`${API_URL}/api/auth/refresh-token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -67,16 +64,45 @@ export const AuthProvider = ({ children }) => {
         return data.token;
       } else {
         // Refresh token expired or invalid, logout user
-        logout();
+        await logoutAndRefresh();
         setIsRefreshing(false);
         return null;
       }
     } catch (error) {
       console.error("Error refreshing token:", error);
-      logout();
+      await logoutAndRefresh();
       setIsRefreshing(false);
       return null;
     }
+  };
+
+  // Logout and refresh page
+  const logoutAndRefresh = async () => {
+    // Call logout API to invalidate refresh token
+    if (user?.id) {
+      try {
+        await fetch(`${API_URL}/api/auth/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        });
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
+    }
+
+    // Clear local storage and state
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
+    setToken(null);
+    setRefreshToken(null);
+    setUser(null);
+
+    // Refresh the page to reset application state
+    window.location.href = "/";
   };
 
   // Auto-refresh token when it's about to expire
@@ -97,6 +123,68 @@ export const AuthProvider = ({ children }) => {
 
     return () => clearInterval(interval);
   }, [token, refreshToken]);
+
+  // Check if user exists and token is valid on mount and when they change
+  useEffect(() => {
+    const validateSession = async () => {
+      // If no user or no token, clear everything
+      if (!user && token) {
+        await logoutAndRefresh();
+        return;
+      }
+
+      // If token exists but is expired and refresh token also expired
+      if (
+        token &&
+        isTokenExpired(token) &&
+        refreshToken &&
+        isTokenExpired(refreshToken)
+      ) {
+        await logoutAndRefresh();
+        return;
+      }
+
+      // If user exists but no token, clear everything
+      if (user && !token) {
+        await logoutAndRefresh();
+        return;
+      }
+    };
+
+    validateSession();
+  }, []);
+
+  // Verify user still exists in backend (optional but recommended)
+  useEffect(() => {
+    const verifyUser = async () => {
+      if (!token || !user?.id) return;
+
+      try {
+        const response = await fetch(`${API_URL}/api/me`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 401 || response.status === 404) {
+          // User doesn't exist or token is invalid
+          await logoutAndRefresh();
+        }
+      } catch (error) {
+        console.error("Error verifying user:", error);
+        // Don't logout on network errors, only on auth errors
+      }
+    };
+
+    // Verify user on mount
+    verifyUser();
+
+    // Verify user every 10 minutes
+    const interval = setInterval(verifyUser, 10 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [token, user]);
 
   const login = (token, refreshToken, userData) => {
     localStorage.setItem("token", token);

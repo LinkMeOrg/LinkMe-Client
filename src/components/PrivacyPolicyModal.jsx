@@ -1,45 +1,49 @@
 import React, { useState, useEffect } from "react";
 import {
   X,
+  Lock,
   Shield,
-  FileText,
   AlertTriangle,
   Loader2,
   CheckCircle2,
-  ScrollText,
-  Scale,
+  FileText,
+  Database,
+  Eye,
+  UserCheck,
+  Server,
+  Key,
 } from "lucide-react";
 import axios from "axios";
 
-export default function TermsModal({ isOpen, onClose }) {
-  const [termsData, setTermsData] = useState(null);
+export default function PrivacyPolicyModal({ isOpen, onClose }) {
+  const [policyData, setPolicyData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     if (isOpen) {
-      fetchTermsAndConditions();
+      fetchPrivacyPolicy();
     }
   }, [isOpen]);
 
-  const fetchTermsAndConditions = async () => {
+  const fetchPrivacyPolicy = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const response = await axios.get(`${API_URL}/api/terms`);
+      const response = await axios.get(`${API_URL}/api/privacy-policy`);
 
       if (response.data.success) {
-        setTermsData(response.data.data);
+        setPolicyData(response.data.data);
       } else {
-        setError("Failed to load terms and conditions");
+        setError("Failed to load privacy policy");
       }
     } catch (err) {
-      console.error("Error fetching terms:", err);
+      console.error("Error fetching privacy policy:", err);
       setError(
         err.response?.data?.message ||
-          "Unable to load terms and conditions. Please try again later."
+          "Unable to load privacy policy. Please try again later."
       );
     } finally {
       setLoading(false);
@@ -55,25 +59,25 @@ export default function TermsModal({ isOpen, onClose }) {
         <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 z-10">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Scale className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Shield className="w-6 h-6 text-indigo-600" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-1">
-                  {termsData?.title || "Terms & Conditions"}
+                  {policyData?.title || "Privacy Policy"}
                 </h2>
                 <p className="text-sm text-gray-600">
-                  Legal agreement governing your use of our services
+                  How we collect, use, and protect your personal information
                 </p>
-                {termsData?.version && (
+                {policyData?.version && (
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                      Version {termsData.version}
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                      Version {policyData.version}
                     </span>
-                    {termsData?.effectiveDate && (
+                    {policyData?.effectiveDate && (
                       <span className="text-xs text-gray-500">
                         Effective:{" "}
-                        {new Date(termsData.effectiveDate).toLocaleDateString(
+                        {new Date(policyData.effectiveDate).toLocaleDateString(
                           "en-US",
                           {
                             year: "numeric",
@@ -101,11 +105,11 @@ export default function TermsModal({ isOpen, onClose }) {
         <div className="flex-1 overflow-y-auto px-8 py-6 bg-gray-50">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-24">
-              <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4">
-                <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+              <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mb-4">
+                <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
               </div>
               <p className="text-gray-700 font-medium">
-                Loading Terms & Conditions...
+                Loading Privacy Policy...
               </p>
               <p className="text-sm text-gray-500 mt-1">
                 Please wait while we retrieve the document
@@ -123,7 +127,7 @@ export default function TermsModal({ isOpen, onClose }) {
                   </h3>
                   <p className="text-gray-600 mb-4">{error}</p>
                   <button
-                    onClick={fetchTermsAndConditions}
+                    onClick={fetchPrivacyPolicy}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium"
                   >
                     Retry Loading
@@ -133,21 +137,64 @@ export default function TermsModal({ isOpen, onClose }) {
             </div>
           ) : (
             <div className="max-w-4xl mx-auto space-y-6">
-              {/* Important Notice */}
-              <div className="bg-amber-50 border-l-4 border-amber-500 rounded-r-lg p-5">
+              {/* Privacy Commitment Banner */}
+              <div className="bg-blue-50 border-l-4 border-blue-500 rounded-r-lg p-5">
                 <div className="flex gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <Shield className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h3 className="font-semibold text-amber-900 mb-1">
-                      Legal Agreement
+                    <h3 className="font-semibold text-blue-900 mb-1">
+                      Our Commitment to Your Privacy
                     </h3>
-                    <p className="text-sm text-amber-800 leading-relaxed">
-                      By accessing or using our services, you acknowledge that
-                      you have read, understood, and agree to be legally bound
-                      by these Terms & Conditions. If you do not agree, please
-                      do not use our services.
+                    <p className="text-sm text-blue-800 leading-relaxed">
+                      We are committed to protecting your personal information
+                      and maintaining transparency about our data practices.
+                      This policy outlines how we collect, use, store, and
+                      safeguard your data in compliance with applicable privacy
+                      laws.
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Privacy Features Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white border border-gray-200 rounded-lg p-5">
+                  <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3">
+                    <Lock className="w-5 h-5 text-green-600" />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-1.5">
+                    End-to-End Encryption
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Your data is encrypted both in transit and at rest using
+                    industry-standard protocols
+                  </p>
+                </div>
+
+                <div className="bg-white border border-gray-200 rounded-lg p-5">
+                  <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
+                    <Eye className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-1.5">
+                    Full Transparency
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Clear information about what data we collect and how it's
+                    used
+                  </p>
+                </div>
+
+                <div className="bg-white border border-gray-200 rounded-lg p-5">
+                  <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center mb-3">
+                    <UserCheck className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h4 className="font-semibold text-gray-900 mb-1.5">
+                    You're in Control
+                  </h4>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    Complete control over your data with easy access, export,
+                    and deletion options
+                  </p>
                 </div>
               </div>
 
@@ -159,7 +206,7 @@ export default function TermsModal({ isOpen, onClose }) {
                     fontFamily: "system-ui, -apple-system, sans-serif",
                   }}
                   dangerouslySetInnerHTML={{
-                    __html: termsData?.content
+                    __html: policyData?.content
                       ?.replace(/\n\n/g, "</p><p class='mt-4'>")
                       .replace(/\n/g, "<br />")
                       .replace(/^/, "<p>")
@@ -174,6 +221,54 @@ export default function TermsModal({ isOpen, onClose }) {
                 />
               </div>
 
+              {/* Contact & Support Section */}
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Server className="w-5 h-5 text-indigo-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      Privacy Questions or Concerns?
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Our privacy team is here to help address any questions
+                      about how we handle your data.
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <div className="flex items-start gap-2">
+                    <Key className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-700">
+                        Privacy Inquiries
+                      </p>
+                      <a
+                        href="mailto:privacy@linkme.com"
+                        className="text-sm text-indigo-600 hover:text-indigo-700"
+                      >
+                        privacy@linkme.com
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Database className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-700">
+                        Data Requests
+                      </p>
+                      <a
+                        href="mailto:data@linkme.com"
+                        className="text-sm text-indigo-600 hover:text-indigo-700"
+                      >
+                        data@linkme.com
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Document Metadata */}
               <div className="bg-white border border-gray-200 rounded-lg p-6">
                 <div className="flex items-start gap-3 mb-4">
@@ -183,13 +278,13 @@ export default function TermsModal({ isOpen, onClose }) {
                   </h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  {termsData?.effectiveDate && (
+                  {policyData?.effectiveDate && (
                     <div>
                       <span className="font-medium text-gray-700">
                         Effective Date:
                       </span>
                       <p className="text-gray-600 mt-0.5">
-                        {new Date(termsData.effectiveDate).toLocaleDateString(
+                        {new Date(policyData.effectiveDate).toLocaleDateString(
                           "en-US",
                           {
                             year: "numeric",
@@ -200,13 +295,13 @@ export default function TermsModal({ isOpen, onClose }) {
                       </p>
                     </div>
                   )}
-                  {termsData?.updatedAt && (
+                  {policyData?.updatedAt && (
                     <div>
                       <span className="font-medium text-gray-700">
                         Last Updated:
                       </span>
                       <p className="text-gray-600 mt-0.5">
-                        {new Date(termsData.updatedAt).toLocaleDateString(
+                        {new Date(policyData.updatedAt).toLocaleDateString(
                           "en-US",
                           {
                             year: "numeric",
@@ -217,19 +312,19 @@ export default function TermsModal({ isOpen, onClose }) {
                       </p>
                     </div>
                   )}
-                  {termsData?.lastModifiedBy && (
+                  {policyData?.lastModifiedBy && (
                     <div>
                       <span className="font-medium text-gray-700">
                         Modified By:
                       </span>
                       <p className="text-gray-600 mt-0.5">
-                        {termsData.lastModifiedBy}
+                        {policyData.lastModifiedBy}
                       </p>
                     </div>
                   )}
                   <div>
                     <span className="font-medium text-gray-700">
-                      Document Status:
+                      Policy Status:
                     </span>
                     <p className="text-gray-600 mt-0.5 flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-green-600" />
@@ -239,9 +334,10 @@ export default function TermsModal({ isOpen, onClose }) {
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-200">
                   <p className="text-xs text-gray-500 leading-relaxed">
-                    These terms may be updated periodically. We will notify you
-                    of any material changes. Continued use of our services after
-                    updates constitutes acceptance of the revised terms.
+                    This privacy policy may be updated from time to time to
+                    reflect changes in our practices or legal requirements. We
+                    will notify you of any material changes via email or through
+                    our platform.
                   </p>
                 </div>
               </div>
@@ -252,12 +348,12 @@ export default function TermsModal({ isOpen, onClose }) {
         {/* Professional Footer */}
         <div className="sticky bottom-0 bg-white border-t border-gray-200 px-8 py-4 flex items-center justify-between z-10">
           <p className="text-xs text-gray-500">
-            Please read this document carefully before proceeding
+            Your privacy and data security are our top priorities
           </p>
           <button
             onClick={onClose}
             disabled={loading}
-            className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             <CheckCircle2 className="w-4 h-4" />
             {loading ? "Loading..." : "I Acknowledge"}

@@ -1,6 +1,5 @@
 // src/components/CreateCard/LiveCardPreview.jsx
 import React, { useEffect } from "react";
-import { QRCodeCanvas } from "qrcode.react";
 
 // ==================== UTILITY FUNCTIONS ====================
 function generateProfileUrl(name) {
@@ -326,14 +325,6 @@ function CardPreview({
               NFC • QR
             </span>
           </div>
-
-          <div
-            className={`bg-white rounded-md p-1 shadow-lg ${
-              isNeonTemplate ? `shadow-[0_0_20px_${templateStyles.glow}]` : ""
-            }`}
-          >
-            <QRCodeCanvas value={profileUrl} size={40} />
-          </div>
         </div>
       </div>
     </div>
@@ -411,46 +402,6 @@ export default function LiveCardPreview({
             profileUrl={profileUrl}
           />
         </div>
-
-        <div className="mt-5 flex items-center justify-between gap-3 rounded-xl bg-gradient-to-r from-gray-50 to-gray-100 px-4 py-3 border border-gray-200">
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-gray-600 flex items-center gap-1">
-              <span>🔗</span> Your smart link
-            </p>
-            <p className="text-xs text-gray-800 truncate font-mono">
-              {profileUrl}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={handleCopyUrl}
-            className={`btn-ghost-clean text-xs px-3 py-2 whitespace-nowrap transition-all font-semibold ${
-              copied
-                ? "bg-green-100 text-green-700 border-green-300 scale-105"
-                : "hover:scale-105"
-            }`}
-          >
-            {copied ? "✓ Copied!" : "📋 Copy"}
-          </button>
-        </div>
-
-        {/* Design customization preview info */}
-        {currentProfile.designMode === "manual" && currentProfile.color && (
-          <div className="mt-3 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
-            <div className="flex items-center gap-2 text-xs">
-              <div
-                className="w-5 h-5 rounded-lg border-2 border-white shadow-md"
-                style={{ backgroundColor: currentProfile.color }}
-              />
-              <span className="text-gray-700">
-                Brand color:{" "}
-                <span className="font-mono font-bold">
-                  {currentProfile.color.toUpperCase()}
-                </span>
-              </span>
-            </div>
-          </div>
-        )}
 
         {currentProfile.designMode === "ai" && currentProfile.aiBackground && (
           <div className="mt-3 p-3 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200">

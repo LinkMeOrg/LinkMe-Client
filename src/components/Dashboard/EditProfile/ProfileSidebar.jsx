@@ -1,5 +1,4 @@
 import React from "react";
-import { QRCodeCanvas } from "qrcode.react";
 import {
   Eye,
   Activity,
@@ -346,41 +345,8 @@ function LiveCardPreview({ profile }) {
                 {profile.viewCount || 0}
               </span>
             </div>
-
-            <div
-              className={`bg-white rounded-md p-1 shadow-lg ${
-                isNeonTemplate ? `shadow-[0_0_20px_${templateStyles.glow}]` : ""
-              }`}
-            >
-              <QRCodeCanvas value={profileUrl} size={40} />
-            </div>
           </div>
         </div>
-      </div>
-
-      {/* Color Preview */}
-      {profile.color && (
-        <div className="p-3 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
-          <div className="flex items-center gap-2 text-xs">
-            <div
-              className="w-5 h-5 rounded-lg border-2 border-white shadow-md"
-              style={{ backgroundColor: profile.color }}
-            />
-            <span className="text-gray-700">
-              Brand color:{" "}
-              <span className="font-mono font-bold">
-                {profile.color.toUpperCase()}
-              </span>
-            </span>
-          </div>
-        </div>
-      )}
-
-      <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
-        <p className="text-xs text-gray-600 flex items-center gap-2">
-          <span>💡</span>
-          <span>Changes update in real-time on the preview above</span>
-        </p>
       </div>
     </div>
   );
@@ -430,38 +396,6 @@ export default function ProfileSidebar({
 
       {/* Regular Scrollable Content */}
       <div className="space-y-6">
-        {/* QR Code Card */}
-        <div
-          className="bg-white border border-gray-200 rounded-2xl p-6 space-y-4"
-          style={{
-            boxShadow:
-              "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-          }}
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center">
-              <Activity className="w-5 h-5 text-white" />
-            </div>
-            <h2 className="text-xl font-bold text-brand-dark">QR Code</h2>
-          </div>
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl text-center">
-            <QRCodeCanvas
-              id="qr-code"
-              value={profile.profileUrl}
-              size={180}
-              level="H"
-              includeMargin
-            />
-          </div>
-          <button
-            onClick={downloadQR}
-            className="w-full btn-primary-clean py-3 flex items-center justify-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            Download QR Code
-          </button>
-        </div>
-
         {/* Quick Actions */}
         <div
           className="bg-white border border-gray-200 rounded-2xl p-6 space-y-3"

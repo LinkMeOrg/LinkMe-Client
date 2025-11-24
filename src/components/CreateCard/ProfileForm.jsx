@@ -72,12 +72,22 @@ export default function ProfileForm({
     e.preventDefault();
 
     const payloadSocialLinks = Object.entries(socialLinks)
-      .filter(([key, value]) => value && key !== "phone_code")
+      .filter(
+        ([key, value]) =>
+          value && key !== "phone_code" && key !== "whatsapp_code"
+      )
       .map(([key, value]) => {
         if (key === "phone") {
           const code = socialLinks["phone_code"] || "+962";
           return {
             platform: "phone",
+            url: `${code} ${value}`,
+          };
+        }
+        if (key === "whatsapp") {
+          const code = socialLinks["whatsapp_code"] || "+962";
+          return {
+            platform: "whatsapp",
             url: `${code} ${value}`,
           };
         }

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Plus } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Plus, ChevronDown, Search } from "lucide-react";
+import ReactCountryFlag from "react-country-flag";
 import Swal from "sweetalert2";
 
 const PLATFORM_ENUM = [
@@ -13,6 +14,51 @@ const PLATFORM_ENUM = [
   { value: "phone", label: "Phone" },
 ];
 
+const COUNTRY_CODES = [
+  { name: "Jordan", code: "+962", shortcut: "JO" },
+  { name: "Saudi Arabia", code: "+966", shortcut: "SA" },
+  { name: "UAE", code: "+971", shortcut: "AE" },
+  { name: "Qatar", code: "+974", shortcut: "QA" },
+  { name: "Kuwait", code: "+965", shortcut: "KW" },
+  { name: "Bahrain", code: "+973", shortcut: "BH" },
+  { name: "Oman", code: "+968", shortcut: "OM" },
+  { name: "Egypt", code: "+20", shortcut: "EG" },
+  { name: "USA", code: "+1", shortcut: "US" },
+  { name: "UK", code: "+44", shortcut: "GB" },
+  { name: "Canada", code: "+1", shortcut: "CA" },
+  { name: "Australia", code: "+61", shortcut: "AU" },
+  { name: "Germany", code: "+49", shortcut: "DE" },
+  { name: "France", code: "+33", shortcut: "FR" },
+  { name: "Italy", code: "+39", shortcut: "IT" },
+  { name: "Spain", code: "+34", shortcut: "ES" },
+  { name: "Netherlands", code: "+31", shortcut: "NL" },
+  { name: "Sweden", code: "+46", shortcut: "SE" },
+  { name: "Norway", code: "+47", shortcut: "NO" },
+  { name: "Denmark", code: "+45", shortcut: "DK" },
+  { name: "Finland", code: "+358", shortcut: "FI" },
+  { name: "Turkey", code: "+90", shortcut: "TR" },
+  { name: "India", code: "+91", shortcut: "IN" },
+  { name: "Pakistan", code: "+92", shortcut: "PK" },
+  { name: "China", code: "+86", shortcut: "CN" },
+  { name: "Japan", code: "+81", shortcut: "JP" },
+  { name: "South Korea", code: "+82", shortcut: "KR" },
+  { name: "Brazil", code: "+55", shortcut: "BR" },
+  { name: "Mexico", code: "+52", shortcut: "MX" },
+  { name: "Argentina", code: "+54", shortcut: "AR" },
+  { name: "South Africa", code: "+27", shortcut: "ZA" },
+  { name: "Singapore", code: "+65", shortcut: "SG" },
+  { name: "New Zealand", code: "+64", shortcut: "NZ" },
+  { name: "Russia", code: "+7", shortcut: "RU" },
+  { name: "Morocco", code: "+212", shortcut: "MA" },
+  { name: "Nigeria", code: "+234", shortcut: "NG" },
+  { name: "Kenya", code: "+254", shortcut: "KE" },
+  { name: "Bangladesh", code: "+880", shortcut: "BD" },
+  { name: "Thailand", code: "+66", shortcut: "TH" },
+  { name: "Vietnam", code: "+84", shortcut: "VN" },
+  { name: "Philippines", code: "+63", shortcut: "PH" },
+  { name: "Malaysia", code: "+60", shortcut: "MY" },
+];
+
 export default function AddSocialLinkModal({
   isOpen,
   onClose,
@@ -21,36 +67,61 @@ export default function AddSocialLinkModal({
 }) {
   const [platform, setPlatform] = useState("");
   const [url, setUrl] = useState("");
-  const [countryCode, setCountryCode] = useState("+1");
-  const [whatsAppType, setWhatsAppType] = useState("number"); // number or link
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRY_CODES[0]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const countryCodes = [
-    { name: "Jordan", code: "+962", shortcut: "JO", flag: "🇯🇴" },
-    { name: "Saudi Arabia", code: "+966", shortcut: "SA", flag: "🇸🇦" },
-    { name: "UAE", code: "+971", shortcut: "AE", flag: "🇦🇪" },
-    { name: "Qatar", code: "+974", shortcut: "QA", flag: "🇶🇦" },
-    { name: "Kuwait", code: "+965", shortcut: "KW", flag: "🇰🇼" },
-    { name: "USA", code: "+1", shortcut: "US", flag: "🇺🇸" },
-    { name: "UK", code: "+44", shortcut: "GB", flag: "🇬🇧" },
-    { name: "Australia", code: "+61", shortcut: "AU", flag: "🇦🇺" },
-    { name: "Germany", code: "+49", shortcut: "DE", flag: "🇩🇪" },
-    { name: "France", code: "+33", shortcut: "FR", flag: "🇫🇷" },
-    { name: "Italy", code: "+39", shortcut: "IT", flag: "🇮🇹" },
-    { name: "Spain", code: "+34", shortcut: "ES", flag: "🇪🇸" },
-  ];
+  const dropdownRef = useRef(null);
+  const searchInputRef = useRef(null);
 
   const availablePlatforms = PLATFORM_ENUM.filter(
     (p) => !existingPlatforms.includes(p.value)
   );
 
+  // Filter countries based on search query
+  const filteredCountries = COUNTRY_CODES.filter(
+    (country) =>
+      country.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      country.code.includes(searchQuery) ||
+      country.shortcut.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+        setSearchQuery("");
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      // Focus search input when dropdown opens
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  // Reset form when modal opens
   useEffect(() => {
     if (isOpen) {
       setPlatform("");
       setUrl("");
-      setCountryCode("+1");
-      setWhatsAppType("number");
+      setSelectedCountry(COUNTRY_CODES[0]);
+      setIsDropdownOpen(false);
+      setSearchQuery("");
     }
   }, [isOpen]);
+
+  const handleCountrySelect = (country) => {
+    setSelectedCountry(country);
+    setIsDropdownOpen(false);
+    setSearchQuery("");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,38 +141,39 @@ export default function AddSocialLinkModal({
       }
     }
 
-    // WhatsApp validation
+    // WhatsApp validation (number only)
     if (platform === "whatsapp") {
-      if (whatsAppType === "number") {
-        const phoneRegex = /^\+?\d{7,15}$/;
-        if (!phoneRegex.test(trimmedUrl.replace(/\D/g, ""))) {
-          Swal.fire({
-            title: "Invalid WhatsApp Number",
-            text: "Please enter a valid phone number.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-          return;
-        }
-        trimmedUrl = `https://wa.me/${trimmedUrl.replace(/\D/g, "")}`;
-      } else {
-        const whatsappUrlRegex =
-          /^https?:\/\/(wa\.me|api\.whatsapp\.com)\/\d+$/i;
-        if (!whatsappUrlRegex.test(trimmedUrl)) {
-          Swal.fire({
-            title: "Invalid WhatsApp Link",
-            text: "Please enter a valid WhatsApp link.",
-            icon: "warning",
-            confirmButtonText: "OK",
-          });
-          return;
-        }
+      const cleanedNumber = trimmedUrl.replace(/\D/g, "");
+      if (cleanedNumber.length < 7 || cleanedNumber.length > 15) {
+        Swal.fire({
+          title: "Invalid WhatsApp Number",
+          text: "Please enter a valid phone number (7-15 digits).",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
       }
+      // Format as WhatsApp link
+      const fullNumber = `${selectedCountry.code.replace(
+        "+",
+        ""
+      )}${cleanedNumber}`;
+      trimmedUrl = `https://wa.me/${fullNumber}`;
     }
 
-    // Phone number
+    // Phone validation
     if (platform === "phone") {
-      trimmedUrl = `${countryCode}${trimmedUrl.replace(/\D/g, "")}`;
+      const cleanedNumber = trimmedUrl.replace(/\D/g, "");
+      if (cleanedNumber.length < 7 || cleanedNumber.length > 15) {
+        Swal.fire({
+          title: "Invalid Phone Number",
+          text: "Please enter a valid phone number (7-15 digits).",
+          icon: "warning",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+      trimmedUrl = `${selectedCountry.code}${cleanedNumber}`;
     }
 
     onAdd(platform, trimmedUrl);
@@ -112,8 +184,10 @@ export default function AddSocialLinkModal({
 
   if (!isOpen) return null;
 
+  const needsCountryCode = platform === "whatsapp" || platform === "phone";
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-6 w-full max-w-md">
         <h2 className="text-xl font-bold mb-4">Add Social Link</h2>
 
@@ -122,7 +196,7 @@ export default function AddSocialLinkModal({
             <p className="text-gray-600 mb-4">All platforms have been added!</p>
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-gray-300"
+              className="px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-50 transition-colors"
             >
               Close
             </button>
@@ -131,13 +205,16 @@ export default function AddSocialLinkModal({
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Platform Select */}
             <div>
-              <label className="block text-sm font-semibold mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Platform
               </label>
               <select
                 value={platform}
-                onChange={(e) => setPlatform(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm"
+                onChange={(e) => {
+                  setPlatform(e.target.value);
+                  setUrl(""); // Reset URL when platform changes
+                }}
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
                 required
               >
                 <option value="">Select Platform</option>
@@ -149,118 +226,159 @@ export default function AddSocialLinkModal({
               </select>
             </div>
 
-            {/* WhatsApp type selection */}
-            {platform === "whatsapp" && (
-              <div className="flex gap-4 items-center mb-2">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="whatsappType"
-                    value="number"
-                    checked={whatsAppType === "number"}
-                    onChange={() => setWhatsAppType("number")}
-                    className="form-radio"
-                  />
-                  Number
-                </label>
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="whatsappType"
-                    value="link"
-                    checked={whatsAppType === "link"}
-                    onChange={() => setWhatsAppType("link")}
-                    className="form-radio"
-                  />
-                  Link
-                </label>
-              </div>
-            )}
-
             {/* Input fields */}
-            {platform === "whatsapp" ? (
-              whatsAppType === "number" ? (
-                <div className="flex gap-2">
-                  <select
-                    value={countryCode}
-                    onChange={(e) => setCountryCode(e.target.value)}
-                    className="border border-gray-200 rounded-xl px-3 py-2 text-sm"
-                  >
-                    {countryCodes.map((c) => (
-                      <option key={c.code} value={c.code}>
-                        {c.flag} {c.shortcut} {c.code}
-                      </option>
-                    ))}
-                  </select>
+            {platform && (
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  {platform === "email"
+                    ? "Email Address"
+                    : platform === "phone"
+                    ? "Phone Number"
+                    : platform === "whatsapp"
+                    ? "WhatsApp Number"
+                    : "URL / Contact"}
+                </label>
+
+                {needsCountryCode ? (
+                  <div className="flex gap-2">
+                    {/* Custom Country Code Selector */}
+                    <div
+                      className="w-40 flex-shrink-0 relative"
+                      ref={dropdownRef}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="w-full h-[46px] px-3 py-3 bg-white border border-gray-300 rounded-xl hover:border-brand-primary focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/40 transition-all duration-200 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-2">
+                          <ReactCountryFlag
+                            countryCode={selectedCountry.shortcut}
+                            svg
+                            style={{ width: "1.5em", height: "1.5em" }}
+                          />
+                          <span className="font-semibold text-sm text-gray-700">
+                            {selectedCountry.code}
+                          </span>
+                        </div>
+                        <ChevronDown
+                          size={16}
+                          className={`text-gray-400 transition-transform duration-200 ${
+                            isDropdownOpen ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      {isDropdownOpen && (
+                        <div className="absolute z-[100] mt-2 w-72 bg-white rounded-xl shadow-2xl border-2 border-gray-100 overflow-hidden left-0">
+                          {/* Search Box */}
+                          <div className="p-3 border-b border-gray-100 bg-gray-50/50">
+                            <div className="relative">
+                              <Search
+                                size={16}
+                                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                              />
+                              <input
+                                ref={searchInputRef}
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search country..."
+                                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary transition-all"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Countries List */}
+                          <div className="max-h-64 overflow-y-auto py-1">
+                            {filteredCountries.length > 0 ? (
+                              filteredCountries.map((country) => (
+                                <button
+                                  key={`${country.code}-${country.shortcut}`}
+                                  type="button"
+                                  onClick={() => handleCountrySelect(country)}
+                                  className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gradient-to-r hover:from-brand-primary/5 hover:to-purple-500/5 transition-all duration-150 ${
+                                    selectedCountry.code === country.code &&
+                                    selectedCountry.shortcut ===
+                                      country.shortcut
+                                      ? "bg-gradient-to-r from-brand-primary/10 to-purple-500/10"
+                                      : ""
+                                  }`}
+                                >
+                                  <ReactCountryFlag
+                                    countryCode={country.shortcut}
+                                    svg
+                                    style={{ width: "1.5em", height: "1.5em" }}
+                                  />
+                                  <div className="flex-1 text-left">
+                                    <div className="flex items-center gap-2">
+                                      <span className="font-semibold text-sm text-gray-700">
+                                        {country.code}
+                                      </span>
+                                      <span className="text-xs text-gray-500">
+                                        {country.name}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </button>
+                              ))
+                            ) : (
+                              <div className="px-4 py-8 text-center">
+                                <p className="text-sm text-gray-500">
+                                  No countries found
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Phone/WhatsApp Input */}
+                    <input
+                      type="tel"
+                      value={url}
+                      onChange={(e) => setUrl(e.target.value)}
+                      className="flex-1 border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
+                      placeholder={
+                        platform === "whatsapp"
+                          ? "7X XXX XXXX"
+                          : "Enter phone number"
+                      }
+                      required
+                    />
+                  </div>
+                ) : (
                   <input
-                    type="text"
+                    type={platform === "email" ? "email" : "text"}
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm"
-                    placeholder="Enter WhatsApp number"
+                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/40 focus:border-brand-primary transition-all"
+                    placeholder={
+                      platform === "email"
+                        ? "example@email.com"
+                        : "Enter URL or contact info"
+                    }
                     required
                   />
-                </div>
-              ) : (
-                <input
-                  type="text"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm"
-                  placeholder="Enter full WhatsApp link"
-                  required
-                />
-              )
-            ) : platform === "phone" ? (
-              <div className="flex gap-2">
-                <select
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value)}
-                  className="border border-gray-200 rounded-xl px-3 py-2 text-sm"
-                >
-                  {countryCodes.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.flag} {c.shortcut} {c.code}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm"
-                  placeholder="Enter phone number"
-                  required
-                />
-              </div>
-            ) : (
-              <div>
-                <label className="block text-sm font-semibold mb-2">
-                  URL / Contact
-                </label>
-                <input
-                  type="text"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm"
-                  placeholder="Enter URL or contact info"
-                  required
-                />
+                )}
               </div>
             )}
 
             {/* Buttons */}
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-3 pt-2">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl border border-gray-300"
+                className="px-4 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 rounded-xl bg-brand-primary text-white flex items-center gap-2"
+                disabled={!platform}
+                className="px-4 py-2.5 rounded-xl bg-brand-primary text-white font-medium hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
                 <Plus className="w-4 h-4" /> Add Link
               </button>

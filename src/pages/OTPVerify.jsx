@@ -17,10 +17,10 @@ const OTPVerify = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const inputRefs = useRef([]);
-  const API_URL = import.meta.env.VITE_API_URL; // For Vite
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const email = state?.email;
-  const returnTo = state?.returnTo; // ✅ NEW: Get returnTo from state
+  const returnTo = state?.returnTo;
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -73,21 +73,35 @@ const OTPVerify = () => {
 
   const handlePaste = (e) => {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData("text");
-    if (!/^\d+$/.test(pastedData)) return;
+    const pastedData = e.clipboardData.getData("text").trim();
 
-    const newOtp = [...otp];
+    // Allow only digits
+    if (!/^\d+$/.test(pastedData)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Format",
+        text: "Please paste only numeric digits",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      return;
+    }
+
+    const newOtp = ["", "", "", "", "", ""];
     for (let i = 0; i < Math.min(pastedData.length, 6); i++) {
       newOtp[i] = pastedData[i];
     }
     setOtp(newOtp);
 
+    // Focus on last filled input or last input
     const lastFilledIndex = Math.min(pastedData.length - 1, 5);
-    if (inputRefs.current[lastFilledIndex + 1]) {
-      inputRefs.current[lastFilledIndex + 1].focus();
-    } else {
-      inputRefs.current[5].focus();
-    }
+    setTimeout(() => {
+      if (inputRefs.current[lastFilledIndex + 1]) {
+        inputRefs.current[lastFilledIndex + 1].focus();
+      } else {
+        inputRefs.current[5].focus();
+      }
+    }, 0);
   };
 
   const handleSubmit = async (e) => {
@@ -103,15 +117,14 @@ const OTPVerify = () => {
     }
 
     try {
-      const response = await axios.post(
-        `${API_URL}/auth/verify-otp`,
-        { email, otp: otpString }
-      );
+      const response = await axios.post(`${API_URL}/auth/verify-otp`, {
+        email,
+        otp: otpString,
+      });
 
       if (response.status === 200) {
         const { token, refreshToken, user } = response.data;
 
-        // Updated: Pass both token and refreshToken
         login(token, refreshToken, user);
 
         Swal.fire({
@@ -120,7 +133,6 @@ const OTPVerify = () => {
           text: "Your OTP has been verified successfully.",
           confirmButtonText: "OK",
         }).then(() => {
-          // Check if there's a returnTo path
           if (returnTo) {
             navigate(returnTo);
           } else {
@@ -144,10 +156,9 @@ const OTPVerify = () => {
     setError(null);
 
     try {
-      const response = await axios.post(
-        `${API_URL}/auth/resend-otp`,
-        { email }
-      );
+      const response = await axios.post(`${API_URL}/auth/resend-otp`, {
+        email,
+      });
 
       if (response.status === 200) {
         Swal.fire({
@@ -226,28 +237,6 @@ const OTPVerify = () => {
                   />
                 ))}
               </div>
-
-              {/* Copy OTP Button */}
-              {otp.join("").length === 6 && (
-                <div className="text-center mt-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      navigator.clipboard.writeText(otp.join(""));
-                      Swal.fire({
-                        icon: "success",
-                        title: "Copied!",
-                        text: "OTP code copied to clipboard",
-                        timer: 1500,
-                        showConfirmButton: false,
-                      });
-                    }}
-                    className="text-sm text-brand-primary hover:underline font-medium"
-                  >
-                    Copy OTP
-                  </button>
-                </div>
-              )}
             </div>
 
             <button

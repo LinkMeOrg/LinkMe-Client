@@ -312,19 +312,36 @@ export default function CreateCard() {
         token
       );
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
+        // Extract the actual error message from the response
+        let errorMessage = "Error creating profile. Please try again.";
+
+        if (data.error) {
+          // Remove "Validation error:" prefix if it exists
+          errorMessage = data.error.replace(/^Validation error:\s*/i, "");
+        } else if (data.message) {
+          // Otherwise use the general message
+          errorMessage = data.message;
+        }
+
+        // If there are validation errors array, format them
+        if (data.errors && Array.isArray(data.errors)) {
+          errorMessage = data.errors
+            .map((err) => err.replace(/^Validation error:\s*/i, ""))
+            .join(", ");
+        }
+
         Swal.fire({
           icon: "error",
           title: "Error",
-          text:
-            errorData.message || "Error creating profile. Please try again.",
+          text: errorMessage,
           confirmButtonColor: "#060640",
         });
         return;
       }
 
-      const data = await res.json();
       Swal.fire({
         icon: "success",
         title: "Profile Created!",
@@ -338,11 +355,11 @@ export default function CreateCard() {
         navigate("/dashboard");
       });
     } catch (err) {
-      console.error(err);
+      console.error("Error creating profile:", err);
       Swal.fire({
         icon: "error",
         title: "Something went wrong",
-        text: "Please try again.",
+        text: "An unexpected error occurred. Please try again.",
         confirmButtonColor: "#060640",
       });
     } finally {
