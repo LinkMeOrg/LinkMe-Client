@@ -12,6 +12,7 @@ import {
   Sparkles,
   Link as LinkIcon,
   Palette,
+  Zap 
 } from "lucide-react";
 
 // ==================== UTILITY FUNCTIONS ====================

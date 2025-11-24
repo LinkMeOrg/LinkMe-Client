@@ -139,7 +139,7 @@ export default function ProfileCardDesktop({
               </div>
 
               {/* QR Code */}
-              <div className="bg-white p-6 rounded-2xl shadow-2xl">
+              {/* <div className="bg-white p-6 rounded-2xl shadow-2xl">
                 <QRCodeCanvas
                   value={profile.profileUrl}
                   size={200}
@@ -150,8 +150,8 @@ export default function ProfileCardDesktop({
                 <p className="text-center text-xs text-gray-600 mt-3 font-medium">
                   Scan to save contact
                 </p>
-              </div>
-            </div>
+              </div> */}
+            </div> 
 
             {/* Right Side - Social Links & Actions (60%) */}
             <div className="col-span-3 p-12">
@@ -179,13 +179,14 @@ export default function ProfileCardDesktop({
                     <Share2 className="w-5 h-5" />
                     Share
                   </button>
-                  <button
+
+                  {/* <button
                     onClick={() => setShowQRModal(true)}
                     className="px-6 py-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/20 transition-all flex items-center gap-2 text-white font-medium"
                   >
                     <QrCode className="w-5 h-5" />
                     QR
-                  </button>
+                  </button> */}
                   <button
                     onClick={handleDownloadVCard}
                     className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all flex items-center gap-2 text-white font-semibold"

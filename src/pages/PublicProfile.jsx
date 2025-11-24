@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import ProfileCardDesktop from "../components/PublicProfile/ProfileCardDesktop";
 import ProfileCardMobile from "../components/PublicProfile/ProfileCardMobile";
 import ShareModal from "../components/PublicProfile/Modals";
-import QRModal from "../components/PublicProfile/QRModal";
 import NotFound from "./NotFound";
 import VisitorContactModal from "../components/PublicProfile/VisitorContactModal";
 import { Loader2, AlertTriangle } from "lucide-react";
@@ -16,9 +15,8 @@ export default function PublicProfile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);
-  const [showQRModal, setShowQRModal] = useState(false);
   const [showVisitorModal, setShowVisitorModal] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL; 
 
   useEffect(() => {
     fetchProfile();
@@ -119,15 +117,6 @@ export default function PublicProfile() {
     setShowShareModal(false);
   };
 
-  const handleDownloadQR = () => {
-    const canvas = document.getElementById("profile-qr");
-    const url = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.download = `${profile.slug}-qr-code.png`;
-    link.href = url;
-    link.click();
-  };
-
   const handleDownloadVCard = () => {
     const phoneLink = profile.socialLinks?.find((l) => l.platform === "phone");
     const emailLink = profile.socialLinks?.find((l) => l.platform === "email");
@@ -168,7 +157,7 @@ END:VCARD`;
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="relative">
           <Loader2 className="w-16 h-16 text-blue-500 animate-spin" />
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -190,7 +179,7 @@ END:VCARD`;
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <div className="min-h-screen bg-white">
       {/* Desktop View (hidden on mobile) */}
       <div className="hidden lg:block">
         <ProfileCardDesktop
@@ -204,7 +193,6 @@ END:VCARD`;
           handleDownloadVCard={handleDownloadVCard}
           handleSocialClick={handleSocialClick}
           setShowShareModal={setShowShareModal}
-          setShowQRModal={setShowQRModal}
         />
       </div>
 
@@ -221,7 +209,6 @@ END:VCARD`;
           handleDownloadVCard={handleDownloadVCard}
           handleSocialClick={handleSocialClick}
           setShowShareModal={setShowShareModal}
-          setShowQRModal={setShowQRModal}
         />
       </div>
 
@@ -230,13 +217,6 @@ END:VCARD`;
         isOpen={showShareModal}
         onClose={() => setShowShareModal(false)}
         onShare={handleShare}
-      />
-
-      <QRModal
-        isOpen={showQRModal}
-        onClose={() => setShowQRModal(false)}
-        profile={profile}
-        onDownload={handleDownloadQR}
       />
 
       <VisitorContactModal

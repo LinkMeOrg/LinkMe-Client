@@ -141,7 +141,7 @@ export default function ProfileCardMobile({
             </div>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-3 gap-2 pt-3">
+            <div className="grid grid-cols-2 gap-2 pt-3">
               <button
                 onClick={() => setShowShareModal(true)}
                 className="flex flex-col items-center gap-2 px-3 py-3 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all"
@@ -149,13 +149,13 @@ export default function ProfileCardMobile({
                 <Share2 className="w-5 h-5 text-blue-300" />
                 <span className="text-white text-xs font-medium">Share</span>
               </button>
-              <button
+              {/* <button
                 onClick={() => setShowQRModal(true)}
                 className="flex flex-col items-center gap-2 px-3 py-3 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all"
               >
                 <QrCode className="w-5 h-5 text-purple-300" />
                 <span className="text-white text-xs font-medium">QR Code</span>
-              </button>
+              </button> */}
               <button
                 onClick={handleDownloadVCard}
                 className="flex flex-col items-center gap-2 px-3 py-3 bg-gradient-to-br from-blue-500/20 to-purple-600/20 backdrop-blur-sm rounded-xl border border-blue-400/30 hover:border-blue-400/50 transition-all"
@@ -167,7 +167,7 @@ export default function ProfileCardMobile({
           </div>
 
           {/* QR Code Collapsible */}
-          <div className="px-6 pb-6">
+          {/* <div className="px-6 pb-6">
             <button
               onClick={() => setShowQR(!showQR)}
               className="w-full flex items-center justify-between px-4 py-3 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all"
@@ -194,7 +194,7 @@ export default function ProfileCardMobile({
                 </p>
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* Social Links */}
           {visibleLinks.length > 0 && (
