@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
+  const [userInfo, setUserInfo] = useState({ name: "", email: "", role: "" });
   const navigate = useNavigate();
   const location = useLocation();
   const API_URL = import.meta.env.VITE_API_URL;
@@ -31,6 +31,7 @@ export default function DashboardLayout() {
         setUserInfo({
           name: fullName || "User",
           email: data.email || "",
+          role: data.role || "user",
         });
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -155,6 +156,26 @@ export default function DashboardLayout() {
       label: "Analytics",
     },
     {
+      path: "/dashboard/admin/orders",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+          />
+        </svg>
+      ),
+      label: "Orders",
+      badge: null,
+    },
+    {
       path: "/dashboard/settings",
       icon: (
         <svg
@@ -265,35 +286,33 @@ export default function DashboardLayout() {
               <p className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                 Main Menu
               </p>
-              {menuItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative ${
-                    isActive(item.path)
-                      ? "bg-gradient-to-r from-brand-primary to-blue-600 text-white shadow-lg shadow-brand-primary/30"
-                      : "text-gray-700 hover:bg-gray-50"
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all group relative ${
+                  isActive(item.path)
+                    ? "bg-gradient-to-r from-brand-primary to-blue-600 text-white shadow-lg shadow-brand-primary/30"
+                    : "text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <span
+                  className={`transition-transform group-hover:scale-110 ${
+                    isActive(item.path) ? "text-white" : "text-gray-400"
                   }`}
                 >
-                  <span
-                    className={`transition-transform group-hover:scale-110 ${
-                      isActive(item.path) ? "text-white" : "text-gray-400"
-                    }`}
-                  >
-                    {item.icon}
+                  {item.icon}
+                </span>
+                <span className="font-medium flex-1">{item.label}</span>
+                {item.badge && (
+                  <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-green-100 text-green-700">
+                    {item.badge}
                   </span>
-                  <span className="font-medium flex-1">{item.label}</span>
-                  {item.badge && (
-                    <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-green-100 text-green-700">
-                      {item.badge}
-                    </span>
-                  )}
-                  {isActive(item.path) && (
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full" />
-                  )}
-                </Link>
-              ))}
+                )}
+                {isActive(item.path) && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full" />
+                )}
+              </Link>
             </nav>
 
             {/* Quick Actions - Fixed at bottom */}
