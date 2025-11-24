@@ -142,9 +142,9 @@ const Navbar = () => {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-gray-800" />
+              <X className="w-6 h-6 text-brand-primary" />
             ) : (
-              <Menu className="w-6 h-6 text-gray-800" />
+              <Menu className="w-6 h-6 text-brand-primary" />
             )}
           </button>
         </div>
@@ -177,7 +177,7 @@ const Navbar = () => {
           `}
         >
           {/* Header */}
-          <div className="px-6 pt-20 pb-6 border-b border-gray-100">
+          <div className="px-6 pt-24 pb-6 border-b border-gray-100">
             {token && user ? (
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-lg">
