@@ -24,12 +24,17 @@ const WhyChoose = () => {
       text: "Track visits, clicks, and interactions in real-time.",
     },
   ];
+
   return (
-    <section className="py-24 bg-white  text-brand-dark ">
-      <div className="section-shell grid md:grid-cols-2 gap-16 items-center">
+    <section className="py-16 md:py-24 bg-white text-brand-dark overflow-hidden">
+      <div className="section-shell grid md:grid-cols-2 gap-8 md:gap-16 items-center">
         {/* -------- LEFT SIDE CONTENT -------- */}
-        <div data-aos="fade-right" className="space-y-6">
-          <h2 className="text-3xl md:text-4xl font-semibold">
+        <div
+          data-aos="fade-right"
+          data-aos-duration="600"
+          className="space-y-6 px-4 md:px-0"
+        >
+          <h2 className="text-3xl md:text-4xl font-semibold leading-tight">
             Why Choose{" "}
             <span className="text-brand-primary font-bold">
               <span style={{ color: "#f2a91d", fontWeight: "900" }}>Dot</span>{" "}
@@ -37,23 +42,29 @@ const WhyChoose = () => {
             </span>
           </h2>
 
-          <p className="text-gray-600  max-w-md">
+          <p className="text-gray-600 text-base md:text-lg max-w-md">
             A modern, smart, and secure way to share your digital identity.
             Designed to elevate your presence and put you ahead of the game.
           </p>
 
           {/* Feature Boxes */}
-          <div className="grid sm:grid-cols-2 gap-5 pt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 pt-4">
             {features.map((f, i) => (
               <div
                 key={i}
-                className="p-5 rounded-2xl bg-white  border border-gray-200  shadow-md 
+                className="p-4 md:p-5 rounded-2xl bg-white border border-gray-200 shadow-md 
                 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-float"
                 style={{ animationDelay: `${i * 0.15}s` }}
               >
-                <div className="mb-3">{f.icon}</div>
-                <h3 className="font-semibold text-lg mb-1">{f.title}</h3>
-                <p className="text-sm text-gray-600 ">{f.text}</p>
+                <div className="mb-3 w-8 h-8 md:w-auto md:h-auto flex items-center justify-center">
+                  {React.cloneElement(f.icon, {
+                    size: window.innerWidth < 768 ? 24 : 30,
+                  })}
+                </div>
+                <h3 className="font-semibold text-base md:text-lg mb-1">
+                  {f.title}
+                </h3>
+                <p className="text-sm text-gray-600">{f.text}</p>
               </div>
             ))}
           </div>
@@ -62,15 +73,16 @@ const WhyChoose = () => {
         {/* -------- RIGHT SIDE IMAGE + BG TEXT -------- */}
         <div
           data-aos="fade-left"
-          className="relative flex justify-center items-center overflow-hidden"
-          style={{ minHeight: "420px" }}
+          data-aos-duration="600"
+          className="relative flex justify-center items-center px-4 md:px-0"
+          style={{ minHeight: "300px" }}
         >
           {/* IMAGE */}
           <img
             src="/images/man.png"
             alt="Professional Person"
             className="relative z-10 
-              w-[340px] md:w-[480px] lg:w-[550px]
+              w-[280px] sm:w-[340px] md:w-[420px] lg:w-[550px]
               object-contain drop-shadow-2xl"
           />
         </div>

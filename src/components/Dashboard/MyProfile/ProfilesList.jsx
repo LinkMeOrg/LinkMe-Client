@@ -11,6 +11,7 @@ import {
   Play,
   User,
   Building,
+  MoreVertical,
 } from "lucide-react";
 
 export default function ProfilesList({
@@ -21,18 +22,22 @@ export default function ProfilesList({
   onCopyLink,
   onToggleStatus,
 }) {
+  const [openMenu, setOpenMenu] = React.useState(null);
+
   return (
-    <div className="space-y-4">
-      {profiles.map((profile) => (
+    <div className="space-y-4 px-4 sm:px-0">
+      {profiles.map((profile, index) => (
         <div
           key={profile.id}
-          className="group bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl hover:border-brand-primary/50 transition-all duration-300"
+          className="group bg-white border border-gray-200 rounded-2xl p-4 sm:p-6 hover:shadow-xl hover:border-[#0066ff]/50 transition-all duration-300 "
           style={{
             boxShadow:
               "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+            animationDelay: `${index * 0.1}s`,
           }}
         >
-          <div className="flex items-center gap-6">
+          {/* Desktop Layout */}
+          <div className="hidden lg:flex items-center gap-6">
             {/* Profile Header */}
             <div className="flex-1 flex items-start gap-4">
               <div className="flex items-center gap-4">
@@ -41,19 +46,19 @@ export default function ProfilesList({
                     <img
                       src={profile.avatarUrl}
                       alt={profile.name}
-                      className={`w-16 h-16 object-cover ring-2 ring-gray-100 group-hover:ring-brand-primary/50 transition-all ${
+                      className={`w-16 h-16 object-cover ring-2 ring-gray-100 group-hover:ring-[#0066ff]/50 transition-all ${
                         profile.profileType === "personal"
                           ? "rounded-full"
                           : "rounded-xl"
                       }`}
                     />
                     {profile.isActive && (
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
                     )}
                   </div>
                 ) : (
                   <div
-                    className={`w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-3xl group-hover:from-brand-primary/10 group-hover:to-blue-100 transition-all relative ${
+                    className={`w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-3xl group-hover:from-[#0066ff]/10 group-hover:to-blue-100 transition-all relative ${
                       profile.profileType === "personal"
                         ? "rounded-full"
                         : "rounded-xl"
@@ -65,17 +70,17 @@ export default function ProfilesList({
                       <Building className="w-8 h-8 text-gray-500" />
                     )}
                     {profile.isActive && (
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
                     )}
                   </div>
                 )}
                 <div>
-                  <h3 className="font-bold text-brand-dark group-hover:text-brand-primary transition-colors text-lg">
+                  <h3 className="font-bold text-[#0b0f19] group-hover:text-[#0066ff] transition-colors text-lg">
                     {profile.name}
                   </h3>
                   <p className="text-sm text-gray-600">{profile.title}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-brand-primary/10 to-blue-100 text-brand-primary font-medium capitalize">
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-gradient-to-r from-[#0066ff]/10 to-blue-100 text-[#0066ff] font-semibold capitalize">
                       {profile.profileType}
                     </span>
                   </div>
@@ -84,14 +89,14 @@ export default function ProfilesList({
             </div>
 
             {/* Stats */}
-            <div className="flex-1 flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-2 text-gray-600">
+            <div className="flex items-center gap-6 text-sm">
+              <div className="flex items-center gap-2 text-gray-600 hover:text-[#0066ff] transition-colors">
                 <Eye className="w-4 h-4" />
-                <span className="font-medium">{profile.viewCount || 0}</span>
+                <span className="font-semibold">{profile.viewCount || 0}</span>
               </div>
-              <div className="flex items-center gap-2 text-gray-600">
+              <div className="flex items-center gap-2 text-gray-600 hover:text-[#f2a91d] transition-colors">
                 <Link2 className="w-4 h-4" />
-                <span className="font-medium">
+                <span className="font-semibold">
                   {profile.socialLinks?.length || 0}
                 </span>
               </div>
@@ -101,7 +106,139 @@ export default function ProfilesList({
             <div className="grid gap-2 grid-cols-5">
               <Link
                 to={`/dashboard/profiles/${profile.id}`}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all font-medium text-sm"
+                className="group/btn flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105 transition-all font-semibold text-sm"
+              >
+                <Edit className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                Edit
+              </Link>
+
+              <Link
+                to={`/u/${profile.slug}`}
+                target="_blank"
+                className="group/btn flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#0066ff] to-[#0052cc] text-white hover:shadow-lg hover:scale-105 transition-all font-semibold text-sm"
+              >
+                <Eye className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                View
+              </Link>
+
+              <button
+                onClick={() => onShare(profile)}
+                className="group/btn flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 hover:scale-105 transition-all font-semibold text-sm"
+              >
+                <Share2 className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                Share
+              </button>
+
+              <button
+                onClick={() =>
+                  setShowQR(profile.id === showQR ? null : profile.id)
+                }
+                className="group/btn flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-50 text-purple-600 hover:bg-purple-100 hover:scale-105 transition-all font-semibold text-sm"
+              >
+                <QrCode className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                QR
+              </button>
+
+              <button
+                onClick={() => onToggleStatus(profile.id, profile.isActive)}
+                className={`group/btn flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl transition-all font-semibold text-sm hover:scale-105 ${
+                  profile.isActive
+                    ? "bg-orange-50 text-orange-600 hover:bg-orange-100"
+                    : "bg-green-50 text-green-600 hover:bg-green-100"
+                }`}
+              >
+                {profile.isActive ? (
+                  <>
+                    <Pause className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                    Pause
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                    Activate
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile & Tablet Layout */}
+          <div className="lg:hidden space-y-4">
+            {/* Header Section */}
+            <div className="flex items-start gap-3">
+              {/* Avatar */}
+              {profile.avatarUrl ? (
+                <div className="relative flex-shrink-0">
+                  <img
+                    src={profile.avatarUrl}
+                    alt={profile.name}
+                    className={`w-14 h-14 sm:w-16 sm:h-16 object-cover ring-2 ring-gray-100 group-hover:ring-[#0066ff]/50 transition-all ${
+                      profile.profileType === "personal"
+                        ? "rounded-full"
+                        : "rounded-xl"
+                    }`}
+                  />
+                  {profile.isActive && (
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                  )}
+                </div>
+              ) : (
+                <div
+                  className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center group-hover:from-[#0066ff]/10 group-hover:to-blue-100 transition-all relative ${
+                    profile.profileType === "personal"
+                      ? "rounded-full"
+                      : "rounded-xl"
+                  }`}
+                >
+                  {profile.profileType === "personal" ? (
+                    <User className="w-7 h-7 text-gray-500" />
+                  ) : (
+                    <Building className="w-7 h-7 text-gray-500" />
+                  )}
+                  {profile.isActive && (
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                  )}
+                </div>
+              )}
+
+              {/* Profile Info */}
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-[#0b0f19] text-base sm:text-lg truncate group-hover:text-[#0066ff] transition-colors">
+                  {profile.name}
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 truncate">
+                  {profile.title}
+                </p>
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  <span className="text-xs px-2.5 py-1 rounded-full bg-gradient-to-r from-[#0066ff]/10 to-blue-100 text-[#0066ff] font-semibold capitalize">
+                    {profile.profileType}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="flex items-center gap-4 text-sm bg-gray-50 rounded-xl p-3">
+              <div className="flex items-center gap-2 text-gray-600">
+                <Eye className="w-4 h-4 text-[#0066ff]" />
+                <span className="font-semibold">{profile.viewCount || 0}</span>
+                <span className="text-xs">views</span>
+              </div>
+              <div className="h-4 w-px bg-gray-300"></div>
+              <div className="flex items-center gap-2 text-gray-600">
+                <Link2 className="w-4 h-4 text-[#f2a91d]" />
+                <span className="font-semibold">
+                  {profile.socialLinks?.length || 0}
+                </span>
+                <span className="text-xs">links</span>
+              </div>
+            </div>
+
+            {/* Action Buttons - 2 Column Grid on Mobile */}
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <Link
+                to={`/dashboard/profiles/${profile.id}`}
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all font-semibold text-sm"
               >
                 <Edit className="w-4 h-4" />
                 Edit
@@ -110,7 +247,7 @@ export default function ProfilesList({
               <Link
                 to={`/u/${profile.slug}`}
                 target="_blank"
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-primary to-blue-600 text-white hover:shadow-lg transition-all font-medium text-sm"
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-[#0066ff] to-[#0052cc] text-white hover:shadow-lg transition-all font-semibold text-sm"
               >
                 <Eye className="w-4 h-4" />
                 View
@@ -118,7 +255,7 @@ export default function ProfilesList({
 
               <button
                 onClick={() => onShare(profile)}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all font-medium text-sm"
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 transition-all font-semibold text-sm"
               >
                 <Share2 className="w-4 h-4" />
                 Share
@@ -128,7 +265,7 @@ export default function ProfilesList({
                 onClick={() =>
                   setShowQR(profile.id === showQR ? null : profile.id)
                 }
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-purple-50 text-purple-600 hover:bg-purple-100 transition-all font-medium text-sm"
+                className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-purple-50 text-purple-600 hover:bg-purple-100 transition-all font-semibold text-sm"
               >
                 <QrCode className="w-4 h-4" />
                 QR
@@ -136,7 +273,7 @@ export default function ProfilesList({
 
               <button
                 onClick={() => onToggleStatus(profile.id, profile.isActive)}
-                className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl transition-all font-medium text-sm ${
+                className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl transition-all font-semibold text-sm col-span-2 sm:col-span-1 ${
                   profile.isActive
                     ? "bg-orange-50 text-orange-600 hover:bg-orange-100"
                     : "bg-green-50 text-green-600 hover:bg-green-100"

@@ -24,7 +24,7 @@ const HowItWorks = () => {
     <section className="relative py-20 md:py-24 overflow-hidden bg-gradient-to-b from-white to-[#f4f6ff]">
 
       {/* Faded Background Title */}
-      <h1 className="absolute top-5 md:top-10 left-1/2 -translate-x-1/2 text-[45px] sm:text-[65px] md:text-[90px] font-extrabold text-[#f2a91d]/20 tracking-widest select-none whitespace-nowrap">
+      <h1 className="absolute top-2 md:top-6 left-1/2 -translate-x-1/2 text-[40px] sm:text-[65px] md:text-[90px] font-extrabold text-[#f2a91d]/20 tracking-widest select-none whitespace-nowrap">
         HOW IT WORKS
       </h1>
 

@@ -176,9 +176,7 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* ============================
-          WHAT WE OFFER — SAME PADDING AS CREATE CARD
-      ============================= */}
+
       <section className="section-shell py-20 md:py-24 ">
         <div className="max-w-2xl mb-12" data-aos="fade-up">
           <h2 className="text-3xl md:text-4xl font-extrabold leading-tight">

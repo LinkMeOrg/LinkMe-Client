@@ -5,7 +5,7 @@ import {
   User,
   Building,
   CheckCircle,
-  PauseCircle,
+  PauseCircle,  
   BarChart2,
 } from "lucide-react";
 

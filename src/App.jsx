@@ -23,7 +23,8 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import OAuthSuccessWrapper from "./components/OAuthSuccessWrapper";
 import OTPVerify from "./pages/OTPVerify";
-import TermsModal from "./components/TermsModal";import CreateCard from "./pages/CreateCard";
+import TermsModal from "./components/TermsModal";
+import CreateCard from "./pages/CreateCard";
 import PublicProfile from "./pages/PublicProfile";
 import HowItWorks from "./pages/HowItWorks";
 import VerifyAccount from "./pages/VerifyAccount";
@@ -35,7 +36,8 @@ import MyProfiles from "./pages/dashboard/MyProfiles";
 import EditProfile from "./pages/dashboard/EditProfile";
 import Analytics from "./pages/dashboard/Analytics";
 import Settings from "./pages/dashboard/Settings";
-
+import CartCheckout from "./pages/dashboard/CartCheckout";
+import MyOrders from "./pages/dashboard/MyOrders";
 // Helpers
 import ScrollToTopButton from "./layout/ScrollToTopButton";
 
@@ -77,7 +79,7 @@ const AppContent = () => {
 
   return (
     <>
-      <ScrollToTop /> {/* <-- Added ScrollToTop */}
+      <ScrollToTop />
       {!shouldHideNavbarFooter && <Navbar />}
       <Routes>
         {/* ---------- GUEST ONLY ---------- */}
@@ -111,7 +113,7 @@ const AppContent = () => {
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/pricing" element={<Pricing />} />;
+        <Route path="/pricing" element={<Pricing />} />
         {/* ---------- PROTECTED USER ROUTES ---------- */}
         <Route
           path="/profile"
@@ -121,7 +123,6 @@ const AppContent = () => {
             </ProtectedRoute>
           }
         />
-        {/* ---------- PROTECTED DASHBOARD ---------- */}
         <Route
           path="/dashboard"
           element={
@@ -135,10 +136,13 @@ const AppContent = () => {
           <Route path="profiles/:id" element={<EditProfile />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="cart" element={<CartCheckout />} />
+          <Route path="my-orders" element={<MyOrders />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
       {!shouldHideNavbarFooter && <Footer />}
+      {/* Scroll to top button is now always visible on all pages including dashboard */}
       <ScrollToTopButton />
     </>
   );
