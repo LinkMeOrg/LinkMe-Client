@@ -707,7 +707,7 @@ const SignUp = () => {
               <input
                 type="text"
                 name="firstname"
-                placeholder="Khaled"
+                placeholder="First Name"
                 required
                 value={formData.firstname}
                 onChange={handleChange}
@@ -723,7 +723,7 @@ const SignUp = () => {
               <input
                 type="text"
                 name="secondname"
-                placeholder="Mohammad"
+                placeholder="Second Name"
                 required
                 value={formData.secondname}
                 onChange={handleChange}
@@ -739,7 +739,7 @@ const SignUp = () => {
               <input
                 type="text"
                 name="lastname"
-                placeholder="Ezat"
+                placeholder="Last Name"
                 required
                 value={formData.lastname}
                 onChange={handleChange}

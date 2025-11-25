@@ -21,31 +21,31 @@ export const SOCIAL_PLATFORMS = [
   {
     key: "linkedin",
     label: "LinkedIn",
-    placeholder: "Your LinkedIn URL",
+    placeholder: "Your LinkedIn Username/link",
     icon: Linkedin,
   },
   {
     key: "instagram",
     label: "Instagram",
-    placeholder: "Your Instagram link",
+    placeholder: "Your Instagram Username/link",
     icon: Instagram,
   },
   {
     key: "twitter",
     label: "Twitter",
-    placeholder: "Your Twitter link",
+    placeholder: "Your Twitter Username/link",
     icon: Twitter,
   },
   {
     key: "github",
     label: "GitHub",
-    placeholder: "Your GitHub link",
+    placeholder: "Your GitHub Username/link",
     icon: Github,
   },
   {
     key: "whatsapp",
     label: "WhatsApp",
-    placeholder: "Your WhatsApp link",
+    placeholder: "Your WhatsApp Number",
     icon: MessageCircle,
   },
   {
