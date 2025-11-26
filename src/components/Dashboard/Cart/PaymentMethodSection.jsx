@@ -1,4 +1,5 @@
 import React from "react";
+import { Wallet } from "lucide-react";
 
 export default function PaymentMethodSection() {
   return (
@@ -9,8 +10,9 @@ export default function PaymentMethodSection() {
       <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-            <span className="text-2xl">💵</span>
+            <Wallet className="h-7 w-7 text-green-700" />
           </div>
+
           <div className="space-y-3">
             {/* Option 1 */}
             <div>

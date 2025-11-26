@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { User, Mail, Calendar, Edit, Camera } from "lucide-react";
+import { User, Mail, Calendar, Edit, Camera, Loader2 } from "lucide-react";
 import Swal from "sweetalert2";
 
 const Profile = () => {
@@ -11,9 +11,7 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const API_URL = import.meta.env.VITE_API_URL; // For Vite
-  
 
-  // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -22,17 +20,14 @@ const Profile = () => {
           throw new Error("No token found");
         }
 
-        const response = await axios.get(
-          `${API_URL}/api/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/api/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         setUserData(response.data);
-        setName(response.data.name); // Initialize form fields with current data
+        setName(response.data.name);
         setEmail(response.data.email);
       } catch (err) {
         setError(err.response?.data?.message || err.message);
@@ -44,7 +39,6 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -63,21 +57,19 @@ const Profile = () => {
         }
       );
 
-      setUserData(response.data); // Update the displayed user data
-      setEditMode(false); // Exit edit mode
+      setUserData(response.data);
+      setEditMode(false);
 
-      // Show success SweetAlert
       Swal.fire({
         icon: "success",
         title: "Profile Updated!",
         text: "Your profile has been successfully updated.",
         showConfirmButton: false,
-        timer: 2000, // Automatically close after 2 seconds
+        timer: 2000,
       });
     } catch (err) {
       setError(err.response?.data?.message || err.message);
 
-      // Show error SweetAlert
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -90,26 +82,7 @@ const Profile = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="flex flex-col items-center">
-          <svg
-            className="animate-spin h-12 w-12 text-indigo-600 mb-4"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
+          <Loader2 className="animate-spin h-12 w-12 text-indigo-600 mb-4" />
           <p className="text-lg text-gray-700">Loading your profile...</p>
         </div>
       </div>
@@ -143,7 +116,6 @@ const Profile = () => {
       <div className="container mx-auto max-w-4xl">
         {userData ? (
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            {/* Profile Header */}
             <div className="bg-indigo-600 h-32 relative">
               <div className="absolute -bottom-16 left-8">
                 <div className="h-32 w-32 rounded-full bg-white p-1 shadow-lg">
@@ -174,7 +146,6 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* Profile Content */}
             <div className="pt-20 pb-8 px-8">
               {editMode ? (
                 <form onSubmit={handleSubmit}>
@@ -226,7 +197,6 @@ const Profile = () => {
                     <span>{userData.email}</span>
                   </div>
 
-                  {/* Member Since */}
                   <div className="mt-8 pt-6 border-t border-gray-200 flex items-center text-gray-500">
                     <Calendar size={16} className="mr-2" />
                     <span>

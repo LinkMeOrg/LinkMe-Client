@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import { suggestedPrompts } from "../../../utils/constants";
+import {
+  Wand,
+  AlertCircle,
+  Lightbulb,
+  Loader2,
+  PaintBucket,
+} from "lucide-react";
 
 export default function AIDesignPanel({
   aiPrompt,
@@ -22,7 +29,7 @@ export default function AIDesignPanel({
     <div className="rounded-xl bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 border-2 border-purple-200/50 p-4 space-y-3">
       <div className="flex items-center gap-2 mb-2">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-          <span className="text-xl">✨</span>
+          <Wand className="h-6 w-6 text-white" />
         </div>
         <div>
           <p className="text-sm font-bold text-gray-800">AI Design Generator</p>
@@ -45,8 +52,9 @@ export default function AIDesignPanel({
       />
 
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-2">
-          <p className="text-xs text-red-600">⚠️ {error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-2 flex items-center gap-2">
+          <AlertCircle className="h-4 w-4 text-red-600" />
+          <p className="text-xs text-red-600">{error}</p>
         </div>
       )}
 
@@ -62,35 +70,20 @@ export default function AIDesignPanel({
       >
         {isGenerating ? (
           <span className="flex items-center justify-center gap-2">
-            <svg
-              className="animate-spin h-5 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
+            <Loader2 className="animate-spin h-5 w-5" />
             Generating...
           </span>
         ) : (
-          "🎨 Generate AI Design"
+          <span className="flex items-center gap-2 justify-center">
+            <PaintBucket className="h-5 w-5" /> Generate AI Design
+          </span>
         )}
       </button>
 
       <div className="space-y-2">
-        <p className="text-xs font-medium text-gray-700">💡 Try these:</p>
+        <p className="text-xs font-medium text-gray-700 flex items-center gap-1">
+          <Lightbulb className="h-4 w-4" /> Try these:
+        </p>
         <div className="grid grid-cols-1 gap-2">
           {suggestedPrompts.map((prompt, index) => (
             <button

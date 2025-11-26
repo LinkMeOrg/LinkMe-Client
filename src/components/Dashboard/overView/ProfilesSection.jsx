@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ProfileCard from "./ProfileCard";
+import { Users, ArrowRight, Plus } from "lucide-react";
 
 export default function ProfilesSection({ profiles }) {
   return (
@@ -9,19 +10,7 @@ export default function ProfilesSection({ profiles }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-brand-dark flex items-center gap-2">
-              <svg
-                className="w-6 h-6 text-brand-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                />
-              </svg>
+              <Users className="w-6 h-6 text-brand-primary" />
               Your Profiles
             </h2>
             <p className="text-sm text-gray-500 mt-1">
@@ -33,38 +22,14 @@ export default function ProfilesSection({ profiles }) {
             className="text-sm font-medium text-brand-primary hover:text-blue-600 transition-colors flex items-center gap-1 group"
           >
             View all
-            <svg
-              className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
         {profiles.length === 0 ? (
           <div className="text-center py-16">
             <div className="w-24 h-24 bg-gradient-to-br from-brand-primary/10 to-blue-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
-              <svg
-                className="w-12 h-12 text-brand-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                />
-              </svg>
+              <Users className="w-12 h-12 text-brand-primary" />
             </div>
             <h3 className="text-2xl font-bold text-brand-dark mb-3">
               No profiles yet
@@ -77,19 +42,7 @@ export default function ProfilesSection({ profiles }) {
               to="/create-card"
               className="btn-primary-clean px-8 py-4 inline-flex items-center gap-2 shadow-lg"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
+              <Plus className="w-5 h-5" />
               Create Your First Profile
             </Link>
           </div>

@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Hourglass,
+  Check,
+  Cog,
+  Truck,
+  X,
+  Package,
+  User,
+  Briefcase,
+  Wallet,
+  MessageCircle,
+} from "lucide-react";
 
 export default function MyOrders() {
   const [loading, setLoading] = useState(true);
@@ -17,12 +29,12 @@ export default function MyOrders() {
   };
 
   const statusIcons = {
-    pending: "⏳",
-    confirmed: "✓",
-    processing: "⚙️",
-    shipped: "🚚",
-    delivered: "✅",
-    cancelled: "❌",
+    pending: <Hourglass className="w-4 h-4" />,
+    confirmed: <Check className="w-4 h-4" />,
+    processing: <Cog className="w-4 h-4" />,
+    shipped: <Truck className="w-4 h-4" />,
+    delivered: <Check className="w-4 h-4" />,
+    cancelled: <X className="w-4 h-4" />,
   };
 
   const statusDescriptions = {
@@ -84,7 +96,7 @@ export default function MyOrders() {
       {orders.length === 0 ? (
         <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
           <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-            <span className="text-5xl">📦</span>
+            <Package className="w-12 h-12 text-gray-500" />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
             No orders yet
@@ -149,9 +161,11 @@ export default function MyOrders() {
                       />
                     ) : (
                       <div className="w-12 h-12 rounded-lg bg-brand-primary/10 border-2 border-brand-primary/20 flex items-center justify-center">
-                        <span className="text-xl">
-                          {order.cardType === "personal" ? "👤" : "💼"}
-                        </span>
+                        {order.cardType === "personal" ? (
+                          <User className="w-5 h-5 text-brand-primary" />
+                        ) : (
+                          <Briefcase className="w-5 h-5 text-brand-primary" />
+                        )}
                       </div>
                     )}
                     <div>
@@ -282,12 +296,13 @@ export default function MyOrders() {
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-3 border-t border-gray-200">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-gray-600">
-                    <span>💵</span>
+                    <Wallet className="w-4 h-4" />
                     <span>Payment: Cash on Delivery</span>
                   </div>
                   {order.orderStatus === "delivered" && (
                     <span className="text-green-600 font-medium">
-                      ✓ Completed
+                      <Check className="inline w-4 h-4 mr-1" />
+                      Completed
                     </span>
                   )}
                 </div>
@@ -302,7 +317,7 @@ export default function MyOrders() {
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-2xl">💬</span>
+              <MessageCircle className="w-7 h-7 text-blue-600" />
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-1">

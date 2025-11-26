@@ -10,6 +10,7 @@ import ShippingAddressForm from "../../components/Dashboard/Cart/ShippingAddress
 import PaymentMethodSection from "../../components/Dashboard/Cart/PaymentMethodSection";
 import LoadingSpinner from "../../components/Dashboard/Cart/LoadingSpinner";
 import { generateAIImage } from "../../utils/cardUtils";
+import { Loader2 } from "lucide-react"; // <-- Added Loader2 import
 
 export default function CartCheckout() {
   const navigate = useNavigate();
@@ -47,7 +48,6 @@ export default function CartCheckout() {
     notes: "",
   });
 
-  // Effects
   useEffect(() => {
     fetchProfiles();
     fetchUserInfo();
@@ -69,7 +69,6 @@ export default function CartCheckout() {
     }
   }, [selectedProfileId, allProfiles]);
 
-  // API calls
   const fetchProfiles = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -111,7 +110,6 @@ export default function CartCheckout() {
     }
   };
 
-  // Handlers
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -123,15 +121,12 @@ export default function CartCheckout() {
     setIsGeneratingAI(true);
     try {
       const imageUrl = await generateAIImage(aiPrompt);
-
-      // Preload image
       await new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(imageUrl);
         img.onerror = () => reject(new Error("Failed to load image"));
         img.src = imageUrl;
       });
-
       setCurrentDesign({
         ...currentDesign,
         designMode: "ai",
@@ -218,7 +213,6 @@ export default function CartCheckout() {
     }
   };
 
-  // Render states
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -244,7 +238,6 @@ export default function CartCheckout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="mb-6">
           <button
             onClick={() => navigate("/dashboard")}
@@ -274,7 +267,6 @@ export default function CartCheckout() {
           Review your card design and complete your order
         </p>
 
-        {/* Profile Selector */}
         <ProfileSelector
           profiles={allProfiles}
           selectedProfileId={selectedProfileId}
@@ -282,7 +274,6 @@ export default function CartCheckout() {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column: Card Preview & Design Options */}
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -293,28 +284,19 @@ export default function CartCheckout() {
               <div className="mt-4 flex gap-2">
                 <button
                   type="button"
-                  onClick={() => setShowDesignEdit(!showDesignEdit)}
+                  onClick={() => navigate(`/dashboard/profiles/${profile.id}`)}
                   className="flex-1 btn-ghost-clean text-sm py-2"
                 >
-                  {showDesignEdit ? "✓ Done" : "🎨 Edit Design"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowTemplateGuide(!showTemplateGuide)}
-                  className="flex-1 btn-ghost-clean text-sm py-2"
-                >
-                  {showTemplateGuide ? "✓ Close" : "📐 Template Guide"}
+                  Edit Design
                 </button>
               </div>
             </div>
 
-            {/* Template Guide */}
             <TemplateGuide
               isOpen={showTemplateGuide}
               onClose={() => setShowTemplateGuide(false)}
             />
 
-            {/* Design Editor */}
             {showDesignEdit && (
               <DesignEditor
                 currentDesign={currentDesign}
@@ -327,11 +309,9 @@ export default function CartCheckout() {
               />
             )}
 
-            {/* Order Summary */}
             <OrderSummary totalAmount={15.0} />
           </div>
 
-          {/* Right Column: Order Form */}
           <div className="lg:col-span-2">
             <form onSubmit={handleSubmitOrder} className="space-y-6">
               <ContactInformationForm
@@ -353,26 +333,8 @@ export default function CartCheckout() {
               >
                 {submitting ? (
                   <span className="flex items-center justify-center gap-2">
-                    <svg
-                      className="animate-spin h-5 w-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
+                    <Loader2 className="animate-spin h-5 w-5" />{" "}
+                    {/* <-- Updated spinner */}
                     Processing Order...
                   </span>
                 ) : (

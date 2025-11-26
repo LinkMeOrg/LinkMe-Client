@@ -2,6 +2,7 @@ import React from "react";
 import AIDesignPanel from "./AIDesignPanel";
 import { templates, presetColors } from "../../../utils/constants";
 import { adjustColorBrightness } from "../../../utils/cardUtils";
+import { PaintBucket, Wand, Upload, Check } from "lucide-react";
 
 export default function DesignEditor({
   currentDesign,
@@ -36,9 +37,12 @@ export default function DesignEditor({
                 : "border-gray-200 hover:border-brand-primary/50"
             }`}
           >
-            <div className="text-2xl mb-1">🎨</div>
+            <div className="text-2xl mb-1 flex justify-center">
+              <PaintBucket className="h-6 w-6" />
+            </div>
             <div className="text-[10px] font-medium">Manual</div>
           </button>
+
           <button
             type="button"
             onClick={() =>
@@ -50,9 +54,12 @@ export default function DesignEditor({
                 : "border-gray-200 hover:border-purple-400"
             }`}
           >
-            <div className="text-2xl mb-1">✨</div>
+            <div className="text-2xl mb-1 flex justify-center">
+              <Wand className="h-6 w-6 text-purple-600" />
+            </div>
             <div className="text-[10px] font-medium">AI</div>
           </button>
+
           <button
             type="button"
             onClick={() => document.getElementById("image-upload").click()}
@@ -62,10 +69,13 @@ export default function DesignEditor({
                 : "border-gray-200 hover:border-green-400"
             }`}
           >
-            <div className="text-2xl mb-1">📤</div>
+            <div className="text-2xl mb-1 flex justify-center">
+              <Upload className="h-6 w-6 text-green-600" />
+            </div>
             <div className="text-[10px] font-medium">Upload</div>
           </button>
         </div>
+
         <input
           id="image-upload"
           type="file"
@@ -150,8 +160,9 @@ export default function DesignEditor({
       {/* Upload Info */}
       {currentDesign.designMode === "upload" && currentDesign.uploadedImage && (
         <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-          <p className="text-sm font-semibold text-green-900">
-            ✓ Custom Image Uploaded
+          <p className="text-sm font-semibold text-green-900 flex items-center gap-1">
+            <Check className="h-4 w-4 text-green-700" />
+            Custom Image Uploaded
           </p>
           <p className="text-xs text-green-700 mt-1">
             Your custom design is ready!

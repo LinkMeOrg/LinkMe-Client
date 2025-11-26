@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, Lock, Shield, Check } from "lucide-react";
+import { Eye, EyeOff, Lock, Shield, Check, Loader2 } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -16,8 +16,7 @@ const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL; // For Vite
-
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
@@ -27,7 +26,6 @@ const ResetPassword = () => {
     setShowPassword((prev) => !prev);
   };
 
-  // Password strength requirements
   const hasMinLength = newPassword.length >= 8;
   const hasUppercase = /[A-Z]/.test(newPassword);
   const hasLowercase = /[a-z]/.test(newPassword);
@@ -37,7 +35,6 @@ const ResetPassword = () => {
   );
   const passwordsMatch = newPassword === confirmPassword && newPassword !== "";
 
-  // Countdown timer for redirection
   useEffect(() => {
     if (redirecting && countdown > 0) {
       const timer = setTimeout(() => {
@@ -67,7 +64,7 @@ const ResetPassword = () => {
         newPassword,
       });
       setMessage(response.data.message);
-      setRedirecting(true); // Start countdown
+      setRedirecting(true);
     } catch (error) {
       setError(
         error.response?.data?.message || "An error occurred. Please try again."
@@ -82,7 +79,6 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen bg-brand-light">
-      {/* WRAPPER */}
       <section className="section-shell pt-28 pb-20 flex justify-center items-start">
         <div
           data-aos="fade-up"
@@ -100,7 +96,6 @@ const ResetPassword = () => {
             </p>
           </div>
 
-          {/* Success Message */}
           {message && (
             <div
               className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg flex items-start"
@@ -118,7 +113,6 @@ const ResetPassword = () => {
             </div>
           )}
 
-          {/* Error Alert */}
           {error && (
             <div
               className="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg"
@@ -128,9 +122,7 @@ const ResetPassword = () => {
             </div>
           )}
 
-          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* New Password */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 New Password
@@ -161,7 +153,6 @@ const ResetPassword = () => {
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div className="space-y-1">
               <label className="text-sm font-medium text-gray-700">
                 Confirm Password
@@ -181,7 +172,6 @@ const ResetPassword = () => {
               </div>
             </div>
 
-            {/* Password strength indicator */}
             {newPassword.length > 0 && (
               <div className="space-y-2 pt-2">
                 <p className="text-sm font-medium text-gray-700">
@@ -290,7 +280,6 @@ const ResetPassword = () => {
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading || redirecting}
@@ -298,26 +287,7 @@ const ResetPassword = () => {
             >
               {loading ? (
                 <span className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
+                  <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
                   Processing...
                 </span>
               ) : redirecting ? (
@@ -327,7 +297,6 @@ const ResetPassword = () => {
               )}
             </button>
 
-            {/* Back to Login */}
             {!redirecting && (
               <div className="text-center text-sm text-gray-600 pt-2">
                 <p>

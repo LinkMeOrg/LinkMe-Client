@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image } from "lucide-react";
+import { Image, Check } from "lucide-react";
 
 export default function TemplateSelector({
   templates,
@@ -41,17 +41,7 @@ export default function TemplateSelector({
             >
               {isSelected && (
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-brand-primary rounded-full flex items-center justify-center shadow-lg z-10">
-                  <svg
-                    className="w-4 h-4 text-white"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M5 13l4 4L19 7"></path>
-                  </svg>
+                  <Check className="w-4 h-4 text-white" />
                 </div>
               )}
 

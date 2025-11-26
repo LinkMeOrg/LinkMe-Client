@@ -63,7 +63,6 @@ export const AuthProvider = ({ children }) => {
         setIsRefreshing(false);
         return data.token;
       } else {
-        // Refresh token expired or invalid, logout user
         await logoutAndRefresh();
         setIsRefreshing(false);
         return null;
@@ -78,7 +77,6 @@ export const AuthProvider = ({ children }) => {
 
   // Logout and refresh page
   const logoutAndRefresh = async () => {
-    // Call logout API to invalidate refresh token
     if (user?.id) {
       try {
         await fetch(`${API_URL}/api/auth/logout`, {

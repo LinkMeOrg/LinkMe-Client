@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Search, X } from "lucide-react";
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -157,19 +158,7 @@ const Gallery = () => {
                     className="absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-sm"
                     style={{ backgroundColor: `${colors.primary}cc` }}
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke={colors.white}
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                      />
-                    </svg>
+                    <Search size={20} color={colors.white} />
                   </div>
 
                   {/* Border Accent */}
@@ -198,19 +187,7 @@ const Gallery = () => {
               style={{ backgroundColor: "rgba(255,255,255,0.1)" }}
               onClick={() => setSelectedImage(null)}
             >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke={colors.white}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <X size={16} color={colors.white} />
             </button>
 
             {/* Image */}

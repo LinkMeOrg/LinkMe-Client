@@ -1,4 +1,5 @@
 import React from "react";
+import { Info, Link2, ExternalLink, QrCode, RefreshCw } from "lucide-react";
 
 export default function ProfileContent({
   profile,
@@ -14,19 +15,7 @@ export default function ProfileContent({
       {profile.bio && (
         <div className="mb-6">
           <h3 className="text-white text-lg font-bold mb-3 flex items-center gap-2">
-            <svg
-              className="w-5 h-5 text-blue-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <Info className="w-5 h-5 text-blue-400" />
             About
           </h3>
 
@@ -44,19 +33,7 @@ export default function ProfileContent({
         ).length > 0 && (
           <div className="flex-1 overflow-y-auto mb-6">
             <h3 className="text-white text-lg font-bold mb-3 flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-purple-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                />
-              </svg>
+              <Link2 className="w-5 h-5 text-purple-400" />
               Connect
             </h3>
 
@@ -84,19 +61,7 @@ export default function ProfileContent({
                       </p>
                     </div>
 
-                    <svg
-                      className="w-5 h-5 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
+                    <ExternalLink className="w-5 h-5 text-gray-400" />
                   </button>
                 ))}
             </div>
@@ -108,19 +73,7 @@ export default function ProfileContent({
         onClick={() => setShowQRModal(true)}
         className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg"
       >
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
-          />
-        </svg>
+        <QrCode className="w-5 h-5" />
         View QR Code
       </button>
 
@@ -129,19 +82,7 @@ export default function ProfileContent({
         onClick={() => setIsFlipped(false)}
         className="w-full mt-3 py-2 text-gray-400 hover:text-white text-sm flex justify-center gap-2 transition"
       >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          />
-        </svg>
+        <RefreshCw className="w-4 h-4" />
         Flip back
       </button>
     </div>

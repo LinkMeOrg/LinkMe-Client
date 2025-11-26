@@ -1,4 +1,5 @@
 import React from "react";
+import { User, Building2, Briefcase, Check } from "lucide-react";
 
 export default function ProfileSelector({
   profiles,
@@ -42,33 +43,34 @@ export default function ProfileSelector({
                       : "rounded-lg"
                   } bg-gray-100 flex items-center justify-center text-2xl border-2 border-gray-200`}
                 >
-                  {prof.profileType === "personal" ? "👤" : "🏢"}
+                  {prof.profileType === "personal" ? (
+                    <User className="h-6 w-6 text-gray-700" />
+                  ) : (
+                    <Building2 className="h-6 w-6 text-gray-700" />
+                  )}
                 </div>
               )}
+
               <div className="flex-1">
                 <p className="font-semibold text-gray-900">{prof.name}</p>
                 <p className="text-sm text-gray-600">{prof.title}</p>
-                <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
-                  {prof.profileType === "personal"
-                    ? "👤 Personal"
-                    : "💼 Business"}
+
+                <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-700 flex items-center gap-1">
+                  {prof.profileType === "personal" ? (
+                    <>
+                      <User className="h-3 w-3" /> Personal
+                    </>
+                  ) : (
+                    <>
+                      <Briefcase className="h-3 w-3" /> Business
+                    </>
+                  )}
                 </span>
               </div>
+
               {selectedProfileId === prof.id && (
                 <div className="w-6 h-6 bg-brand-primary rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
+                  <Check className="w-4 h-4 text-white" />
                 </div>
               )}
             </div>

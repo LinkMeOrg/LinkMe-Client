@@ -1,10 +1,12 @@
+import { Target, Rainbow, Diamond, Moon, Zap, Sparkles } from "lucide-react";
+
 export const templates = [
-  { id: "modern", name: "Modern", icon: "🎯" },
-  { id: "gradient", name: "Gradient", icon: "🌈" },
-  { id: "glass", name: "Glass", icon: "💎" },
-  { id: "dark", name: "Dark", icon: "🌙" },
-  { id: "neon", name: "Neon", icon: "⚡" },
-  { id: "elegant", name: "Elegant", icon: "✨" },
+  { id: "modern", name: "Modern", icon: Target },
+  { id: "gradient", name: "Gradient", icon: Rainbow },
+  { id: "glass", name: "Glass", icon: Diamond },
+  { id: "dark", name: "Dark", icon: Moon },
+  { id: "neon", name: "Neon", icon: Zap },
+  { id: "elegant", name: "Elegant", icon: Sparkles },
 ];
 
 export const presetColors = [
